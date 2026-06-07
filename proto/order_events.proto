@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package order.events;
+
+message OrderAssignedIntegrationEvent {
+  string order_id = 1;
+}
+
+message OrderCompletedIntegrationEvent {
+  string order_id = 1;
+}
