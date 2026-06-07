@@ -24,6 +24,7 @@ dev = [
     "httpx>=0.28.0",
     "testcontainers[postgresql]>=4.9.0",
     "ruff>=0.8.0",
+    "mypy>=1.14.0",
 ]
 
 [build-system]
@@ -49,3 +50,9 @@ ignore = ["N818"]
 [tool.ruff.lint.per-file-ignores]
 "src/delivery/adapters/out/grpc/*_pb2*.py" = ["ALL"]
 "**/__init__.py" = ["F403"]
+
+[tool.mypy]
+strict = true
+python_version = "3.12"
+mypy_path = "src"
+files = ["src", "tests"]
