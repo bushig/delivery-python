@@ -14,9 +14,15 @@ from src.core.domain.model.volume import Volume
         pytest.param(-0.5, id='negative_decimal'),
     ]
 )
-def test_volume_incorrect_value_raises_error(value: float):
-    with pytest.raises(ValueError):
-        Volume(value=Decimal(value))
+def test_volume_incorrect_value_returns_failure(value: float):
+    result = Volume.create(value=Decimal(value))
+    assert result.is_failure()
+
+
+def test_volume_create_success():
+    result = Volume.create(value=Decimal(10))
+    assert result.is_success()
+    assert result.get_value() == Volume(value=Decimal(10))
 
 
 def test_same_volumes_equal():

@@ -56,14 +56,16 @@ def test_take_order_creates_assignment_and_adds_to_list():
     assert courier.assignments[0].location == order.location
 
 
-def test_take_order_raises_when_volume_exceeds():
+def test_take_order_returns_failure_when_volume_exceeds():
     courier = CourierAggregate(
         id=uuid.uuid4(), name="Test Courier", location=Location(x=5, y=5), max_volume=Volume(value=20)
     )
     order = Order(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=25))
 
-    with pytest.raises(ValueError, match="cant take assignment - too big"):
-        courier.take_order(order)
+    result = courier.take_order(order)
+
+    assert result.is_failure()
+    assert result.get_error().message == "cant take assignment - too big"
 
 
 def test_complete_assignment_succeeds_when_courier_nearby():
@@ -74,23 +76,26 @@ def test_complete_assignment_succeeds_when_courier_nearby():
     courier.take_order(order)
     assignment = courier.assignments[0]
 
-    courier.complete_assignment(assignment)
+    result = courier.complete_assignment(assignment)
 
+    assert result.is_success()
     assert assignment.status.name == "completed"
 
 
-def test_complete_assignment_raises_when_assignment_not_in_list():
+def test_complete_assignment_returns_failure_when_assignment_not_in_list():
     courier = CourierAggregate(
         id=uuid.uuid4(), name="Test Courier", location=Location(x=5, y=5), max_volume=Volume(value=20)
     )
     order = Order(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
     assignment = Assignment.create_from_order(order)
 
-    with pytest.raises(ValueError, match="cant complete assignment - not in assignment list"):
-        courier.complete_assignment(assignment)
+    result = courier.complete_assignment(assignment)
+
+    assert result.is_failure()
+    assert result.get_error().message == "cant complete assignment - not in assignment list"
 
 
-def test_complete_assignment_raises_when_courier_too_far():
+def test_complete_assignment_returns_failure_when_courier_too_far():
     courier = CourierAggregate(
         id=uuid.uuid4(), name="Test Courier", location=Location(x=1, y=1), max_volume=Volume(value=20)
     )
@@ -98,8 +103,10 @@ def test_complete_assignment_raises_when_courier_too_far():
     courier.take_order(order)
     assignment = courier.assignments[0]
 
-    with pytest.raises(ValueError, match="cant complete assignment - too far away"):
-        courier.complete_assignment(assignment)
+    result = courier.complete_assignment(assignment)
+
+    assert result.is_failure()
+    assert result.get_error().message == "cant complete assignment - too far away"
 
 
 def test_change_location_updates_location():
@@ -111,12 +118,3 @@ def test_change_location_updates_location():
     courier.change_location(new_location)
 
     assert courier.location == new_location
-
-
-def test_change_location_raises_for_invalid_coordinates():
-    courier = CourierAggregate(
-        id=uuid.uuid4(), name="Test Courier", location=Location(x=5, y=5), max_volume=Volume(value=20)
-    )
-
-    with pytest.raises(ValueError):
-        courier.change_location(Location(x=999, y=999))

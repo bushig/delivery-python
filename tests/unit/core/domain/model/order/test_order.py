@@ -46,8 +46,10 @@ def test_change_status_transitions(initial_status, new_status, should_succeed, e
     order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10), status=initial_status)
 
     if should_succeed:
-        order.change_status(new_status)
+        result = order.change_status(new_status)
+        assert result.is_success()
         assert order.status == new_status
     else:
-        with pytest.raises(ValueError, match=error_match):
-            order.change_status(new_status)
+        result = order.change_status(new_status)
+        assert result.is_failure()
+        assert result.get_error().message == error_match

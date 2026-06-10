@@ -2,12 +2,18 @@ from decimal import Decimal
 
 from pydantic import BaseModel, ConfigDict
 
+from src.libs.errs.error import DomainError
+from src.libs.errs.exceptions import ValueIsInvalidError
+from src.libs.errs.result import Result
+
 
 class Volume(BaseModel):
     model_config = ConfigDict(frozen=True)
 
     value: Decimal
 
-    def model_post_init(self, __context: object) -> None:
-        if self.value <= 0:
-            raise ValueError("Volume can't be negative or zero")
+    @staticmethod
+    def create(value: Decimal) -> Result["Volume", DomainError]:
+        if value <= 0:
+            return Result.failure(ValueIsInvalidError(message="Volume can't be negative or zero"))
+        return Result.success(Volume(value=value))

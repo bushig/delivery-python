@@ -41,8 +41,8 @@ def test_create_from_order_generates_unique_id():
 def test_complete_assignment_sets_status_to_completed():
     assignment = Assignment(id=uuid.uuid4(), order_id=uuid.uuid4(), volume=Volume(value=1), location=Location(x=1, y=4))
 
-    assignment.complete_assignment(courier_location=Location(x=1, y=4))
-
+    result = assignment.complete_assignment(courier_location=Location(x=1, y=4))
+    assert result.is_success()
     assert assignment.status == AssignmentStatusEnum.completed
 
 
@@ -50,8 +50,9 @@ def test_cant_complete_assignment_twice():
     assignment = Assignment(id=uuid.uuid4(), order_id=uuid.uuid4(), volume=Volume(value=1), location=Location(x=1, y=4))
     assignment.complete_assignment(courier_location=Location(x=1, y=4))
 
-    with pytest.raises(ValueError, match="Assignment already completed"):
-        assignment.complete_assignment(courier_location=Location(x=1, y=4))
+    result = assignment.complete_assignment(courier_location=Location(x=1, y=4))
+    assert result.is_failure()
+    assert result.get_error().message == "Assignment already completed"
 
 
 @pytest.mark.parametrize(
@@ -66,11 +67,13 @@ def test_complete_assignment_distance_validation(courier_location, should_succee
     assignment = Assignment(id=uuid.uuid4(), order_id=uuid.uuid4(), volume=Volume(value=1), location=Location(x=5, y=5))
 
     if should_succeed:
-        assignment.complete_assignment(courier_location=courier_location)
+        result = assignment.complete_assignment(courier_location=courier_location)
+        assert result.is_success()
         assert assignment.status == AssignmentStatusEnum.completed
     else:
-        with pytest.raises(ValueError, match="Courier has to be in same location as assignment"):
-            assignment.complete_assignment(courier_location=courier_location)
+        result = assignment.complete_assignment(courier_location=courier_location)
+        assert result.is_failure()
+        assert result.get_error().message == "Courier has to be in same location as assignment"
 
 
 def test_assignment_with_same_id_is_equal():

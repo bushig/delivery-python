@@ -17,10 +17,16 @@ from src.core.domain.model.location import Location
         ]
 
 )
-def test_location_incorrect_values_raises_error(x: int, y: int):
-    with pytest.raises(ValueError):
-        Location(x=x, y=y)
+def test_location_incorrect_values_returns_failure(x: int, y: int):
+    result = Location.create(x=x, y=y)
+    assert result.is_failure()
 
+
+def test_location_create_success():
+    result = Location.create(x=5, y=5)
+    assert result.is_success()
+    assert result.get_value().x == 5
+    assert result.get_value().y == 5
 
 
 def test_same_locations_equal():

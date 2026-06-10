@@ -7,6 +7,9 @@ from pydantic import BaseModel, Field
 from src.core.domain.model.location import Location
 from src.core.domain.model.order import OrderAggregate
 from src.core.domain.model.volume import Volume
+from src.libs.errs.error import DomainError
+from src.libs.errs.exceptions import AssignmentNotPossibleError, InvalidStatusTransitionError
+from src.libs.errs.result import Result
 
 
 class AssignmentStatusEnum(StrEnum):
@@ -30,13 +33,14 @@ class Assignment(BaseModel):
     def __hash__(self) -> int:
         return hash(self.id)
 
-    def complete_assignment(self, courier_location: Location) -> None:
+    def complete_assignment(self, courier_location: Location) -> Result["Assignment", DomainError]:
         if self.status == AssignmentStatusEnum.completed:
-            raise ValueError("Assignment already completed")
+            return Result.failure(InvalidStatusTransitionError(message="Assignment already completed"))
         if courier_location.calculate_distance(self.location) > 1:
-            raise ValueError("Courier has to be in same location as assignment")
+            return Result.failure(AssignmentNotPossibleError(message="Courier has to be in same location as assignment"))
 
         self.status = AssignmentStatusEnum.completed
+        return Result.success(self)
 
     @staticmethod
     def create_from_order(order: OrderAggregate) -> "Assignment":

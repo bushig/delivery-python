@@ -6,6 +6,9 @@ from src.core.domain.model.assignment import Assignment
 from src.core.domain.model.location import Location
 from src.core.domain.model.order import OrderAggregate
 from src.core.domain.model.volume import Volume
+from src.libs.errs.error import DomainError
+from src.libs.errs.exceptions import AssignmentCapacityExceededError, AssignmentNotPossibleError
+from src.libs.errs.result import Result
 
 
 class CourierAggregate(BaseModel):
@@ -22,22 +25,25 @@ class CourierAggregate(BaseModel):
 
         return True
 
-    def take_order(self, new_order: OrderAggregate) -> None:
+    def take_order(self, new_order: OrderAggregate) -> Result["CourierAggregate", DomainError]:
         if not self.can_take_order(new_order):
-            raise ValueError("cant take assignment - too big")
+            return Result.failure(AssignmentCapacityExceededError(message="cant take assignment - too big"))
 
         new_assignment = Assignment.create_from_order(order=new_order)
         self.assignments.append(new_assignment)
+        return Result.success(self)
 
-    def complete_assignment(self, assignment: Assignment) -> None:
+    def complete_assignment(self, assignment: Assignment) -> Result["CourierAggregate", DomainError]:
         if assignment not in self.assignments:
-            raise ValueError("cant complete assignment - not in assignment list")
+            return Result.failure(AssignmentNotPossibleError(message="cant complete assignment - not in assignment list"))
         if assignment.location.calculate_distance(self.location) > 1:
-            raise ValueError("cant complete assignment - too far away")
-         # TODO: find assignment in list and pop it
-        assignment.complete_assignment(self.location)
-        # TODO: complete order
+            return Result.failure(AssignmentNotPossibleError(message="cant complete assignment - too far away"))
+
+        result = assignment.complete_assignment(self.location)
+        if result.is_failure():
+            return Result.failure(result.get_error())
+
+        return Result.success(self)
 
     def change_location(self, new_location: Location):
-
         self.location = new_location
