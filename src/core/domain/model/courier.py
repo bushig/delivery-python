@@ -2,7 +2,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field
 
-from src.core.domain.model.assignment import Assignment
+from src.core.domain.model.assignment import Assignment, AssignmentStatusEnum
 from src.core.domain.model.location import Location
 from src.core.domain.model.order import OrderAggregate
 from src.core.domain.model.volume import Volume
@@ -19,7 +19,7 @@ class CourierAggregate(BaseModel):
     assignments: list[Assignment] = Field(default_factory=list)
 
     def can_take_order(self, new_order: OrderAggregate) -> bool:
-        current_total_volume = sum([i.volume.value for i in self.assignments])
+        current_total_volume = sum([i.volume.value for i in self.assignments if i.status == AssignmentStatusEnum.assigned])
         if current_total_volume + new_order.volume.value > self.max_volume.value:
             return False
 
