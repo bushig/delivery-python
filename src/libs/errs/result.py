@@ -42,7 +42,7 @@ class Result(Generic[T, E]):
             mapped_value = mapper(self._value)
             return Result.success(mapped_value)
         except Exception as e:
-            return Result.failure(DomainError.of("mapping.error", str(e)))
+            return Result.failure(DomainError(code="mapping_error", message=str(e)))
 
     def flat_map(self, mapper) -> "Result":
         if self.is_failure():
