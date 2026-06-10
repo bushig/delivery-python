@@ -1,11 +1,11 @@
 
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from uuid import UUID
 
 from src.core.domain.model.assignment import Assignment
 from src.core.domain.model.location import Location
-from src.core.domain.model.order import Order
+from src.core.domain.model.order import OrderAggregate
 from src.core.domain.model.volume import Volume
 
 
@@ -15,18 +15,18 @@ class CourierAggregate:
     name: str
     location: Location
     max_volume: Volume = Volume(20)
-    assignments: list[Assignment] = []
+    assignments: list[Assignment] = field(default_factory=list)
 
 
-    def can_take_order(self, new_order: Order) -> bool:
+    def can_take_order(self, new_order: OrderAggregate) -> bool:
         current_total_volume = sum([i.volume.value for i in self.assignments])
         if current_total_volume + new_order.volume.value > self.max_volume.value:
             return False
 
         return True
 
-    def take_order(self, new_order: Order) -> None:
-        if not self.can_take_order:
+    def take_order(self, new_order: OrderAggregate) -> None:
+        if not self.can_take_order(new_order):
             raise ValueError("cant take assignment - too big")
 
         new_assignment = Assignment.create_from_order(order=new_order)

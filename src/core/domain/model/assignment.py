@@ -7,7 +7,7 @@ from typing import Any
 from pydantic import UUID4
 
 from src.core.domain.model.location import Location
-from src.core.domain.model.order import Order
+from src.core.domain.model.order import OrderAggregate
 from src.core.domain.model.volume import Volume
 
 
@@ -42,5 +42,5 @@ class Assignment:
         self.status = AssignmentStatusEnum.completed
 
     @staticmethod
-    def create_from_order(order: Order) -> "Assignment":
+    def create_from_order(order: OrderAggregate) -> "Assignment":
         return Assignment(order_id=order.id, volume=order.volume, location=order.location)
