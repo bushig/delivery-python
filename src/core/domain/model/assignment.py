@@ -7,6 +7,7 @@ from typing import Any
 from pydantic import UUID4
 
 from src.core.domain.model.location import Location
+from src.core.domain.model.order import Order
 from src.core.domain.model.volume import Volume
 
 
@@ -14,7 +15,7 @@ class AssignmentStatusEnum(StrEnum):
     assigned = "Assigned"
     completed = "Completed"
 
-@dataclass
+@dataclass(kw_only=True)
 class Assignment:
     """
     Assignment to courier
@@ -32,11 +33,14 @@ class Assignment:
                 return True
         return False
 
-    def complete(self, courier_location: Location) -> None:
+    def complete_assignment(self, courier_location: Location) -> None:
+        if self.status == AssignmentStatusEnum.completed:
+            raise ValueError("Assignment already completed")
         if courier_location.calculate_distance(self.location) > 1:
             raise ValueError("Courier has to be in same location as assignment")
 
-        if self.status == AssignmentStatusEnum.completed:
-            raise ValueError("Assignment already completed")
         self.status = AssignmentStatusEnum.completed
 
+    @staticmethod
+    def create_from_order(order: Order) -> "Assignment":
+        return Assignment(order_id=order.id, volume=order.volume, location=order.location)
