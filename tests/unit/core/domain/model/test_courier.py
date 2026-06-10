@@ -6,40 +6,36 @@ import pytest
 from src.core.domain.model.assignment import Assignment
 from src.core.domain.model.courier import CourierAggregate
 from src.core.domain.model.location import Location
-from src.core.domain.model.order import OrderAggregate
+from src.core.domain.model.order import OrderAggregate as Order
 from src.core.domain.model.volume import Volume
 
 
-def test_can_take_order_when_volume_fits():
+@pytest.mark.parametrize(
+    "order_volume,max_volume,expected",
+    [
+        pytest.param(10, 20, True, id="volume_fits"),
+        pytest.param(25, 20, False, id="volume_exceeds"),
+    ]
+)
+def test_can_take_order_volume_check(order_volume, max_volume, expected):
     courier = CourierAggregate(
-        id=uuid.uuid4(), name="Test Courier", location=Location(5, 5), max_volume=Volume(20)
+        id=uuid.uuid4(), name="Test Courier", location=Location(5, 5), max_volume=Volume(max_volume)
     )
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
+    order = Order(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(order_volume))
 
     result = courier.can_take_order(order)
 
-    assert result is True
-
-
-def test_cant_take_order_when_volume_exceeds_max():
-    courier = CourierAggregate(
-        id=uuid.uuid4(), name="Test Courier", location=Location(5, 5), max_volume=Volume(20)
-    )
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(25))
-
-    result = courier.can_take_order(order)
-
-    assert result is False
+    assert result is expected
 
 
 def test_can_take_order_with_existing_assignments():
     courier = CourierAggregate(
         id=uuid.uuid4(), name="Test Courier", location=Location(5, 5), max_volume=Volume(20)
     )
-    existing_order = OrderAggregate(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
+    existing_order = Order(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
     courier.take_order(existing_order)
 
-    new_order = OrderAggregate(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(5))
+    new_order = Order(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(5))
 
     result = courier.can_take_order(new_order)
 
@@ -50,7 +46,7 @@ def test_take_order_creates_assignment_and_adds_to_list():
     courier = CourierAggregate(
         id=uuid.uuid4(), name="Test Courier", location=Location(5, 5), max_volume=Volume(20)
     )
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
+    order = Order(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
 
     courier.take_order(order)
 
@@ -64,7 +60,7 @@ def test_take_order_raises_when_volume_exceeds():
     courier = CourierAggregate(
         id=uuid.uuid4(), name="Test Courier", location=Location(5, 5), max_volume=Volume(20)
     )
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(25))
+    order = Order(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(25))
 
     with pytest.raises(ValueError, match="cant take assignment - too big"):
         courier.take_order(order)
@@ -74,7 +70,7 @@ def test_complete_assignment_succeeds_when_courier_nearby():
     courier = CourierAggregate(
         id=uuid.uuid4(), name="Test Courier", location=Location(5, 5), max_volume=Volume(20)
     )
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
+    order = Order(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
     courier.take_order(order)
     assignment = courier.assignments[0]
 
@@ -87,7 +83,7 @@ def test_complete_assignment_raises_when_assignment_not_in_list():
     courier = CourierAggregate(
         id=uuid.uuid4(), name="Test Courier", location=Location(5, 5), max_volume=Volume(20)
     )
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
+    order = Order(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
     assignment = Assignment.create_from_order(order)
 
     with pytest.raises(ValueError, match="cant complete assignment - not in assignment list"):
@@ -98,7 +94,7 @@ def test_complete_assignment_raises_when_courier_too_far():
     courier = CourierAggregate(
         id=uuid.uuid4(), name="Test Courier", location=Location(1, 1), max_volume=Volume(20)
     )
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
+    order = Order(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
     courier.take_order(order)
     assignment = courier.assignments[0]
 

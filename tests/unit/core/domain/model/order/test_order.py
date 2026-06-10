@@ -14,40 +14,40 @@ def test_order_default_status_is_created():
     assert order.status == OrderStatusEnum.created
 
 
-def test_change_status_to_assigned_from_created():
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
+@pytest.mark.parametrize(
+    "initial_status,new_status,should_succeed,error_match",
+    [
+        pytest.param(
+            OrderStatusEnum.created, OrderStatusEnum.assigned, True, None, id="created_to_assigned"
+        ),
+        pytest.param(
+            OrderStatusEnum.assigned, OrderStatusEnum.completed, True, None, id="assigned_to_completed"
+        ),
+        pytest.param(
+            OrderStatusEnum.assigned,
+            OrderStatusEnum.assigned,
+            False,
+            "Order can be assigned only if it is in status 'Created'",
+            id="cant_assign_from_assigned",
+        ),
+        pytest.param(
+            OrderStatusEnum.created,
+            OrderStatusEnum.completed,
+            False,
+            "Order can be completed only if it is in status 'Assigned'",
+            id="cant_complete_from_created",
+        ),
+        pytest.param(
+            OrderStatusEnum.created, "InvalidStatus", False, "Cant change to this status", id="invalid_status"
+        ),
+    ]
+)
+def test_change_status_transitions(initial_status, new_status, should_succeed, error_match):
+    order = OrderAggregate(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10), status=initial_status)
 
-    order.change_status(OrderStatusEnum.assigned)
-
-    assert order.status == OrderStatusEnum.assigned
-
-
-def test_change_status_to_completed_from_assigned():
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
-    order.change_status(OrderStatusEnum.assigned)
-
-    order.change_status(OrderStatusEnum.completed)
-
-    assert order.status == OrderStatusEnum.completed
-
-
-def test_cant_assign_order_not_in_created_status():
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
-    order.change_status(OrderStatusEnum.assigned)
-
-    with pytest.raises(ValueError, match="Order can be assigned only if it is in status 'Created'"):
-        order.change_status(OrderStatusEnum.assigned)
-
-
-def test_cant_complete_order_not_in_assigned_status():
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
-
-    with pytest.raises(ValueError, match="Order can be completed only if it is in status 'Assigned'"):
-        order.change_status(OrderStatusEnum.completed)
-
-
-def test_cant_change_to_invalid_status():
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
-
-    with pytest.raises(ValueError, match="Cant change to this status"):
-        order.change_status("InvalidStatus")
+    if should_succeed:
+        order.change_status(new_status)
+        assert order.status == new_status
+    else:
+        with pytest.raises(ValueError, match=error_match):
+            order.change_status(new_status)

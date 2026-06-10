@@ -55,27 +55,23 @@ def test_cant_complete_assignment_twice():
         assignment.complete_assignment(courier_location=Location(1, 4))
 
 
-def test_can_complete_when_courier_at_same_location():
+@pytest.mark.parametrize(
+    "courier_location,should_succeed",
+    [
+        pytest.param(Location(5, 5), True, id="same_location"),
+        pytest.param(Location(5, 6), True, id="adjacent"),
+        pytest.param(Location(5, 7), False, id="too_far"),
+    ]
+)
+def test_complete_assignment_distance_validation(courier_location, should_succeed):
     assignment = Assignment(id=uuid.uuid4(), order_id=uuid.uuid4(), volume=Volume(1), location=Location(5, 5))
 
-    assignment.complete_assignment(courier_location=Location(5, 5))
-
-    assert assignment.status == AssignmentStatusEnum.completed
-
-
-def test_can_complete_when_courier_adjacent():
-    assignment = Assignment(id=uuid.uuid4(), order_id=uuid.uuid4(), volume=Volume(1), location=Location(5, 5))
-
-    assignment.complete_assignment(courier_location=Location(5, 6))
-
-    assert assignment.status == AssignmentStatusEnum.completed
-
-
-def test_cant_complete_when_courier_too_far():
-    assignment = Assignment(id=uuid.uuid4(), order_id=uuid.uuid4(), volume=Volume(1), location=Location(5, 5))
-
-    with pytest.raises(ValueError, match="Courier has to be in same location as assignment"):
-        assignment.complete_assignment(courier_location=Location(5, 7))
+    if should_succeed:
+        assignment.complete_assignment(courier_location=courier_location)
+        assert assignment.status == AssignmentStatusEnum.completed
+    else:
+        with pytest.raises(ValueError, match="Courier has to be in same location as assignment"):
+            assignment.complete_assignment(courier_location=courier_location)
 
 
 def test_assignment_with_same_id_is_equal():
