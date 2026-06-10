@@ -1,10 +1,11 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from pydantic import BaseModel, ConfigDict
 
 
-@dataclass(frozen=True)
-class DomainError:
+class DomainError(BaseModel):
+    model_config = ConfigDict(frozen=True)
+
     code: str
     message: str
 

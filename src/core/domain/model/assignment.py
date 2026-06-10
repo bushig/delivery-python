@@ -1,10 +1,8 @@
-
 import uuid
-from dataclasses import dataclass, field
 from enum import StrEnum
 from typing import Any
 
-from pydantic import UUID4
+from pydantic import BaseModel, Field
 
 from src.core.domain.model.location import Location
 from src.core.domain.model.order import OrderAggregate
@@ -15,16 +13,12 @@ class AssignmentStatusEnum(StrEnum):
     assigned = "Assigned"
     completed = "Completed"
 
-@dataclass(kw_only=True)
-class Assignment:
-    """
-    Assignment to courier
-    """
 
-    order_id: UUID4
+class Assignment(BaseModel):
+    order_id: uuid.UUID
     volume: Volume
     location: Location
-    id: UUID4 = field(default_factory=uuid.uuid4)
+    id: uuid.UUID = Field(default_factory=uuid.uuid4)
     status: AssignmentStatusEnum = AssignmentStatusEnum.assigned
 
     def __eq__(self, value: Any) -> bool:
@@ -32,6 +26,9 @@ class Assignment:
             if value.id == self.id:
                 return True
         return False
+
+    def __hash__(self) -> int:
+        return hash(self.id)
 
     def complete_assignment(self, courier_location: Location) -> None:
         if self.status == AssignmentStatusEnum.completed:

@@ -1,7 +1,6 @@
-
-
-from dataclasses import dataclass, field
 from uuid import UUID
+
+from pydantic import BaseModel, Field
 
 from src.core.domain.model.assignment import Assignment
 from src.core.domain.model.location import Location
@@ -9,14 +8,12 @@ from src.core.domain.model.order import OrderAggregate
 from src.core.domain.model.volume import Volume
 
 
-@dataclass
-class CourierAggregate:
+class CourierAggregate(BaseModel):
     id: UUID
     name: str
     location: Location
-    max_volume: Volume = Volume(20)
-    assignments: list[Assignment] = field(default_factory=list)
-
+    max_volume: Volume = Field(default_factory=lambda: Volume(value=20))
+    assignments: list[Assignment] = Field(default_factory=list)
 
     def can_take_order(self, new_order: OrderAggregate) -> bool:
         current_total_volume = sum([i.volume.value for i in self.assignments])
@@ -37,18 +34,10 @@ class CourierAggregate:
             raise ValueError("cant complete assignment - not in assignment list")
         if assignment.location.calculate_distance(self.location) > 1:
             raise ValueError("cant complete assignment - too far away")
-
-        # TODO: find assignment in list and pop it
+         # TODO: find assignment in list and pop it
         assignment.complete_assignment(self.location)
-
         # TODO: complete order
 
     def change_location(self, new_location: Location):
-        Location.check_is_valid_coordinates(new_location.x, new_location.y)
 
         self.location = new_location
-
-
-
-
-

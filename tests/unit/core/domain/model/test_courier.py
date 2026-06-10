@@ -19,9 +19,9 @@ from src.core.domain.model.volume import Volume
 )
 def test_can_take_order_volume_check(order_volume, max_volume, expected):
     courier = CourierAggregate(
-        id=uuid.uuid4(), name="Test Courier", location=Location(5, 5), max_volume=Volume(max_volume)
+        id=uuid.uuid4(), name="Test Courier", location=Location(x=5, y=5), max_volume=Volume(value=max_volume)
     )
-    order = Order(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(order_volume))
+    order = Order(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=order_volume))
 
     result = courier.can_take_order(order)
 
@@ -30,12 +30,12 @@ def test_can_take_order_volume_check(order_volume, max_volume, expected):
 
 def test_can_take_order_with_existing_assignments():
     courier = CourierAggregate(
-        id=uuid.uuid4(), name="Test Courier", location=Location(5, 5), max_volume=Volume(20)
+        id=uuid.uuid4(), name="Test Courier", location=Location(x=5, y=5), max_volume=Volume(value=20)
     )
-    existing_order = Order(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
+    existing_order = Order(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
     courier.take_order(existing_order)
 
-    new_order = Order(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(5))
+    new_order = Order(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=5))
 
     result = courier.can_take_order(new_order)
 
@@ -44,9 +44,9 @@ def test_can_take_order_with_existing_assignments():
 
 def test_take_order_creates_assignment_and_adds_to_list():
     courier = CourierAggregate(
-        id=uuid.uuid4(), name="Test Courier", location=Location(5, 5), max_volume=Volume(20)
+        id=uuid.uuid4(), name="Test Courier", location=Location(x=5, y=5), max_volume=Volume(value=20)
     )
-    order = Order(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
+    order = Order(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
 
     courier.take_order(order)
 
@@ -58,9 +58,9 @@ def test_take_order_creates_assignment_and_adds_to_list():
 
 def test_take_order_raises_when_volume_exceeds():
     courier = CourierAggregate(
-        id=uuid.uuid4(), name="Test Courier", location=Location(5, 5), max_volume=Volume(20)
+        id=uuid.uuid4(), name="Test Courier", location=Location(x=5, y=5), max_volume=Volume(value=20)
     )
-    order = Order(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(25))
+    order = Order(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=25))
 
     with pytest.raises(ValueError, match="cant take assignment - too big"):
         courier.take_order(order)
@@ -68,9 +68,9 @@ def test_take_order_raises_when_volume_exceeds():
 
 def test_complete_assignment_succeeds_when_courier_nearby():
     courier = CourierAggregate(
-        id=uuid.uuid4(), name="Test Courier", location=Location(5, 5), max_volume=Volume(20)
+        id=uuid.uuid4(), name="Test Courier", location=Location(x=5, y=5), max_volume=Volume(value=20)
     )
-    order = Order(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
+    order = Order(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
     courier.take_order(order)
     assignment = courier.assignments[0]
 
@@ -81,9 +81,9 @@ def test_complete_assignment_succeeds_when_courier_nearby():
 
 def test_complete_assignment_raises_when_assignment_not_in_list():
     courier = CourierAggregate(
-        id=uuid.uuid4(), name="Test Courier", location=Location(5, 5), max_volume=Volume(20)
+        id=uuid.uuid4(), name="Test Courier", location=Location(x=5, y=5), max_volume=Volume(value=20)
     )
-    order = Order(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
+    order = Order(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
     assignment = Assignment.create_from_order(order)
 
     with pytest.raises(ValueError, match="cant complete assignment - not in assignment list"):
@@ -92,9 +92,9 @@ def test_complete_assignment_raises_when_assignment_not_in_list():
 
 def test_complete_assignment_raises_when_courier_too_far():
     courier = CourierAggregate(
-        id=uuid.uuid4(), name="Test Courier", location=Location(1, 1), max_volume=Volume(20)
+        id=uuid.uuid4(), name="Test Courier", location=Location(x=1, y=1), max_volume=Volume(value=20)
     )
-    order = Order(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
+    order = Order(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
     courier.take_order(order)
     assignment = courier.assignments[0]
 
@@ -104,9 +104,9 @@ def test_complete_assignment_raises_when_courier_too_far():
 
 def test_change_location_updates_location():
     courier = CourierAggregate(
-        id=uuid.uuid4(), name="Test Courier", location=Location(5, 5), max_volume=Volume(20)
+        id=uuid.uuid4(), name="Test Courier", location=Location(x=5, y=5), max_volume=Volume(value=20)
     )
-    new_location = Location(3, 3)
+    new_location = Location(x=3, y=3)
 
     courier.change_location(new_location)
 
@@ -115,8 +115,8 @@ def test_change_location_updates_location():
 
 def test_change_location_raises_for_invalid_coordinates():
     courier = CourierAggregate(
-        id=uuid.uuid4(), name="Test Courier", location=Location(5, 5), max_volume=Volume(20)
+        id=uuid.uuid4(), name="Test Courier", location=Location(x=5, y=5), max_volume=Volume(value=20)
     )
 
     with pytest.raises(ValueError):
-        courier.change_location(Location(999, 999))
+        courier.change_location(Location(x=999, y=999))

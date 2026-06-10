@@ -1,16 +1,13 @@
-
-from dataclasses import dataclass
 from decimal import Decimal
 
+from pydantic import BaseModel, ConfigDict
 
-@dataclass(eq=True, frozen=True)
-class Volume:
-    """
-    Volume in litres
-    """
+
+class Volume(BaseModel):
+    model_config = ConfigDict(frozen=True)
+
     value: Decimal
 
-
-    def __post_init__(self):
+    def model_post_init(self, __context: object) -> None:
         if self.value <= 0:
             raise ValueError("Volume can't be negative or zero")

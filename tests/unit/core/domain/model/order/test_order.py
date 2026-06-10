@@ -9,7 +9,7 @@ from src.core.domain.model.volume import Volume
 
 
 def test_order_default_status_is_created():
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10))
+    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
 
     assert order.status == OrderStatusEnum.created
 
@@ -43,7 +43,7 @@ def test_order_default_status_is_created():
     ]
 )
 def test_change_status_transitions(initial_status, new_status, should_succeed, error_match):
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(5, 5), volume=Volume(10), status=initial_status)
+    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10), status=initial_status)
 
     if should_succeed:
         order.change_status(new_status)
