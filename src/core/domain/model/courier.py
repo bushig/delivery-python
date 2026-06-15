@@ -15,7 +15,7 @@ class CourierAggregate:
     _id: UUID
     _name: str
     _location: Location
-    _max_volume: Volume = field(default_factory=lambda: Volume(value=20))
+    _max_volume: Volume = field(default_factory=lambda: Volume(_value=20))
     _assignments: list[Assignment] = field(default_factory=list)
 
     @property

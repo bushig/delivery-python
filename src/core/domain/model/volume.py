@@ -10,33 +10,33 @@ from src.libs.errs.result import Result
 
 @dataclass(frozen=True)
 class Volume:
-    value: Decimal
+    _value: Decimal
 
     def __post_init__(self):
-        if self.value <= 0:
+        if self._value <= 0:
             raise ValueError("Volume can't be negative or zero")
 
     @staticmethod
     def create(value: Decimal) -> Result["Volume", DomainError]:
         try:
-            return Result.success(Volume(value=value))
+            return Result.success(Volume(_value=value))
         except ValueError as e:
             return Result.failure(ValueIsInvalidError(message=str(e)))
 
     def __add__(self, other: "Volume") -> "Volume":
-        return Volume(value=self.value + other.value)
+        return Volume(_value=self._value + other._value)
 
     def __le__(self, other: "Volume") -> bool:
-        return self.value <= other.value
+        return self._value <= other._value
 
     def __lt__(self, other: "Volume") -> bool:
-        return self.value < other.value
+        return self._value < other._value
 
     def __gt__(self, other: "Volume") -> bool:
-        return self.value > other.value
+        return self._value > other._value
 
     def __ge__(self, other: "Volume") -> bool:
-        return self.value >= other.value
+        return self._value >= other._value
 
     @staticmethod
     def sum_volumes(volumes: list["Volume"]) -> "Volume":

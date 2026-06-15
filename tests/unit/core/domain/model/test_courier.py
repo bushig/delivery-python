@@ -21,13 +21,13 @@ from src.core.domain.model.volume import Volume
 )
 def test_can_take_order_volume_check(existing_volumes, new_volume, max_volume, expected):
     courier = CourierAggregate(
-        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(value=max_volume)
+        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(_value=max_volume)
     )
     for vol in existing_volumes:
-        order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=vol))
+        order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(_value=vol))
         courier.take_order(order)
 
-    new_order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=new_volume))
+    new_order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(_value=new_volume))
 
     result = courier.can_take_order(new_order)
 
@@ -36,9 +36,9 @@ def test_can_take_order_volume_check(existing_volumes, new_volume, max_volume, e
 
 def test_take_order_creates_assignment_and_adds_to_list():
     courier = CourierAggregate(
-        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(value=20)
+        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(_value=20)
     )
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
+    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(_value=10))
 
     courier.take_order(order)
 
@@ -50,9 +50,9 @@ def test_take_order_creates_assignment_and_adds_to_list():
 
 def test_take_order_returns_failure_when_volume_exceeds():
     courier = CourierAggregate(
-        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(value=20)
+        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(_value=20)
     )
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=25))
+    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(_value=25))
 
     result = courier.take_order(order)
 
@@ -62,9 +62,9 @@ def test_take_order_returns_failure_when_volume_exceeds():
 
 def test_complete_assignment_succeeds_when_courier_nearby():
     courier = CourierAggregate(
-        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(value=20)
+        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(_value=20)
     )
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
+    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(_value=10))
     courier.take_order(order)
     assignment_id = courier.assignments[0].id
 
@@ -76,9 +76,9 @@ def test_complete_assignment_succeeds_when_courier_nearby():
 
 def test_complete_assignment_returns_failure_when_assignment_not_in_list():
     courier = CourierAggregate(
-        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(value=20)
+        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(_value=20)
     )
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
+    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(_value=10))
     courier.take_order(order)
     fake_assignment_id = uuid.uuid4()
 
@@ -90,9 +90,9 @@ def test_complete_assignment_returns_failure_when_assignment_not_in_list():
 
 def test_complete_assignment_returns_failure_when_courier_too_far():
     courier = CourierAggregate(
-        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=1, y=1), _max_volume=Volume(value=20)
+        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=1, y=1), _max_volume=Volume(_value=20)
     )
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
+    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(_value=10))
     courier.take_order(order)
     assignment_id = courier.assignments[0].id
 
@@ -104,7 +104,7 @@ def test_complete_assignment_returns_failure_when_courier_too_far():
 
 def test_change_location_updates_location():
     courier = CourierAggregate(
-        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(value=20)
+        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(_value=20)
     )
     new_location = Location(x=3, y=3)
 
@@ -118,28 +118,28 @@ def test_default_max_volume_is_20():
         _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5)
     )
 
-    assert courier.max_volume == Volume(value=20)
+    assert courier.max_volume == Volume(_value=20)
 
 
 def test_can_take_order_after_completing_assignment():
     courier = CourierAggregate(
-        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(value=20)
+        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(_value=20)
     )
-    order1 = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=15))
+    order1 = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(_value=15))
     courier.take_order(order1)
     assignment_id = courier.assignments[0].id
     courier.complete_assignment(assignment_id)
 
-    order2 = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=15))
+    order2 = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(_value=15))
 
     assert courier.can_take_order(order2) is True
 
 
 def test_can_take_order_rejects_duplicate_order_assigned():
     courier = CourierAggregate(
-        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(value=20)
+        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(_value=20)
     )
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
+    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(_value=10))
     courier.take_order(order)
 
     result = courier.can_take_order(order)
@@ -149,9 +149,9 @@ def test_can_take_order_rejects_duplicate_order_assigned():
 
 def test_can_take_order_rejects_duplicate_order_completed():
     courier = CourierAggregate(
-        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(value=20)
+        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(_value=20)
     )
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
+    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(_value=10))
     courier.take_order(order)
     assignment_id = courier.assignments[0].id
     courier.complete_assignment(assignment_id)
@@ -163,9 +163,9 @@ def test_can_take_order_rejects_duplicate_order_completed():
 
 def test_take_order_rejects_duplicate_order():
     courier = CourierAggregate(
-        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(value=20)
+        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(_value=20)
     )
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
+    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(_value=10))
     courier.take_order(order)
 
     result = courier.take_order(order)
@@ -176,10 +176,10 @@ def test_take_order_rejects_duplicate_order():
 
 def test_can_take_order_rejects_order_with_assigned_status():
     courier = CourierAggregate(
-        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(value=20)
+        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(_value=20)
     )
     order = OrderAggregate(
-        id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10), status=OrderStatusEnum.assigned
+        id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(_value=10), status=OrderStatusEnum.assigned
     )
 
     result = courier.can_take_order(order)
@@ -189,10 +189,10 @@ def test_can_take_order_rejects_order_with_assigned_status():
 
 def test_can_take_order_rejects_order_with_completed_status():
     courier = CourierAggregate(
-        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(value=20)
+        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(_value=20)
     )
     order = OrderAggregate(
-        id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10), status=OrderStatusEnum.completed
+        id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(_value=10), status=OrderStatusEnum.completed
     )
 
     result = courier.can_take_order(order)
@@ -202,10 +202,10 @@ def test_can_take_order_rejects_order_with_completed_status():
 
 def test_can_take_order_allows_order_with_created_status():
     courier = CourierAggregate(
-        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(value=20)
+        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(_value=20)
     )
     order = OrderAggregate(
-        id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10), status=OrderStatusEnum.created
+        id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(_value=10), status=OrderStatusEnum.created
     )
 
     result = courier.can_take_order(order)
