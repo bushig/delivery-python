@@ -18,11 +18,31 @@ class AssignmentStatusEnum(StrEnum):
 
 @dataclass(eq=False)
 class Assignment:
-    order_id: uuid.UUID
-    volume: Volume
-    location: Location
-    id: uuid.UUID = field(default_factory=uuid.uuid4)
-    status: AssignmentStatusEnum = AssignmentStatusEnum.assigned
+    _order_id: uuid.UUID
+    _volume: Volume
+    _location: Location
+    _id: uuid.UUID = field(default_factory=uuid.uuid4)
+    _status: AssignmentStatusEnum = AssignmentStatusEnum.assigned
+
+    @property
+    def order_id(self) -> uuid.UUID:
+        return self._order_id
+
+    @property
+    def volume(self) -> Volume:
+        return self._volume
+
+    @property
+    def location(self) -> Location:
+        return self._location
+
+    @property
+    def id(self) -> uuid.UUID:
+        return self._id
+
+    @property
+    def status(self) -> AssignmentStatusEnum:
+        return self._status
 
     def __eq__(self, value: Any) -> bool:
         if isinstance(value, Assignment):
@@ -34,14 +54,14 @@ class Assignment:
         return hash(self.id)
 
     def complete_assignment(self, courier_location: Location) -> Result["Assignment", DomainError]:
-        if self.status == AssignmentStatusEnum.completed:
+        if self._status == AssignmentStatusEnum.completed:
             return Result.failure(InvalidStatusTransitionError(message="Assignment already completed"))
-        if courier_location.calculate_distance(self.location) > 1:
+        if courier_location.calculate_distance(self._location) > 1:
             return Result.failure(AssignmentNotPossibleError(message="Courier has to be in same location as assignment"))
 
-        self.status = AssignmentStatusEnum.completed
+        self._status = AssignmentStatusEnum.completed
         return Result.success(self)
 
     @staticmethod
     def create_from_order(order: OrderAggregate) -> "Assignment":
-        return Assignment(order_id=order.id, volume=order.volume, location=order.location)
+        return Assignment(_order_id=order.id, _volume=order.volume, _location=order.location)
