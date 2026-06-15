@@ -8,34 +8,6 @@ from src.core.domain.model.order import OrderAggregate
 from src.core.domain.model.volume import Volume
 
 
-def test_create_from_order_creates_assignment_with_order_data():
-    order_id = uuid.uuid4()
-    order_location = Location(x=5, y=5)
-    order_volume = Volume(value=10)
-    order = OrderAggregate(id=order_id, location=order_location, volume=order_volume)
-
-    assignment = Assignment.create_from_order(order)
-
-    assert assignment.order_id == order_id
-    assert assignment.location == order_location
-    assert assignment.volume == order_volume
-
-
-def test_create_from_order_sets_default_status_assigned():
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
-
-    assignment = Assignment.create_from_order(order)
-
-    assert assignment.status == AssignmentStatusEnum.assigned
-
-
-def test_create_from_order_generates_unique_id():
-    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
-
-    assignment_1 = Assignment.create_from_order(order)
-    assignment_2 = Assignment.create_from_order(order)
-
-    assert assignment_1.id != assignment_2.id
 
 
 def test_complete_assignment_sets_status_to_completed():

@@ -3,7 +3,7 @@ import uuid
 
 import pytest
 
-from src.core.domain.model.assignment import Assignment, AssignmentStatusEnum
+from src.core.domain.model.assignment import AssignmentStatusEnum
 from src.core.domain.model.courier import CourierAggregate
 from src.core.domain.model.location import Location
 from src.core.domain.model.order import OrderAggregate
@@ -67,12 +67,12 @@ def test_complete_assignment_succeeds_when_courier_nearby():
     )
     order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
     courier.take_order(order)
-    assignment = courier.assignments[0]
+    assignment_id = courier.assignments[0].id
 
-    result = courier.complete_assignment(assignment)
+    result = courier.complete_assignment(assignment_id)
 
     assert result.is_success()
-    assert assignment.status.name == "completed"
+    assert courier.assignments[0].status.name == "completed"
 
 
 def test_complete_assignment_returns_failure_when_assignment_not_in_list():
@@ -80,9 +80,10 @@ def test_complete_assignment_returns_failure_when_assignment_not_in_list():
         _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(value=20)
     )
     order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
-    assignment = Assignment.create_from_order(order)
+    courier.take_order(order)
+    fake_assignment_id = uuid.uuid4()
 
-    result = courier.complete_assignment(assignment)
+    result = courier.complete_assignment(fake_assignment_id)
 
     assert result.is_failure()
     assert result.get_error().message == "cant complete assignment - not in assignment list"
@@ -94,9 +95,9 @@ def test_complete_assignment_returns_failure_when_courier_too_far():
     )
     order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
     courier.take_order(order)
-    assignment = courier.assignments[0]
+    assignment_id = courier.assignments[0].id
 
-    result = courier.complete_assignment(assignment)
+    result = courier.complete_assignment(assignment_id)
 
     assert result.is_failure()
     assert result.get_error().message == "cant complete assignment - too far away"
@@ -127,8 +128,8 @@ def test_can_take_order_after_completing_assignment():
     )
     order1 = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=15))
     courier.take_order(order1)
-    assignment = courier.assignments[0]
-    courier.complete_assignment(assignment)
+    assignment_id = courier.assignments[0].id
+    courier.complete_assignment(assignment_id)
 
     order2 = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=15))
 

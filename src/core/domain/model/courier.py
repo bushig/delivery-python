@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from src.core.domain.model.assignment import Assignment, AssignmentStatusEnum
 from src.core.domain.model.location import Location
@@ -49,12 +49,18 @@ class CourierAggregate:
         if not self.can_take_order(new_order):
             return Result.failure(AssignmentCapacityExceededError(message="cant take assignment - too big"))
 
-        new_assignment = Assignment.create_from_order(order=new_order)
+        new_assignment = Assignment(
+            _id=uuid4(),
+            _order_id=new_order.id,
+            _volume=new_order.volume,
+            _location=new_order.location
+        )
         self._assignments.append(new_assignment)
         return Result.success(None)
 
-    def complete_assignment(self, assignment: Assignment) -> Result[None, DomainError]:
-        if assignment not in self._assignments:
+    def complete_assignment(self, assignment_id: UUID) -> Result[None, DomainError]:
+        assignment = next((a for a in self._assignments if a.id == assignment_id), None)
+        if assignment is None:
             return Result.failure(AssignmentNotPossibleError(message="cant complete assignment - not in assignment list"))
         if assignment.location.calculate_distance(self._location) > 1:
             return Result.failure(AssignmentNotPossibleError(message="cant complete assignment - too far away"))

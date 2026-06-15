@@ -61,7 +61,3 @@ class Assignment:
 
         self._status = AssignmentStatusEnum.completed
         return Result.success(None)
-
-    @staticmethod
-    def create_from_order(order: OrderAggregate) -> "Assignment":
-        return Assignment(_order_id=order.id, _volume=order.volume, _location=order.location)
