@@ -46,8 +46,11 @@ class CourierAggregate:
             if assignment.order_id == new_order.id:
                 return False
 
-        current_total_volume = sum([i.volume.value for i in self._assignments if i.status == AssignmentStatusEnum.assigned])
-        if current_total_volume + new_order.volume.value > self._max_volume.value:
+        assigned_volumes = [i.volume for i in self._assignments if i.status == AssignmentStatusEnum.assigned]
+        assigned_volumes.append(new_order.volume)
+
+        total_expected_volume = Volume.sum_volumes(assigned_volumes)
+        if total_expected_volume > self._max_volume:
             return False
 
         return True
