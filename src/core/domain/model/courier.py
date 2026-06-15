@@ -3,7 +3,7 @@ from uuid import UUID, uuid4
 
 from src.core.domain.model.assignment import Assignment, AssignmentStatusEnum
 from src.core.domain.model.location import Location
-from src.core.domain.model.order import OrderAggregate
+from src.core.domain.model.order import OrderAggregate, OrderStatusEnum
 from src.core.domain.model.volume import Volume
 from src.libs.errs.error import DomainError
 from src.libs.errs.exceptions import AssignmentCapacityExceededError, AssignmentNotPossibleError
@@ -39,6 +39,9 @@ class CourierAggregate:
         return tuple(self._assignments)
 
     def can_take_order(self, new_order: OrderAggregate) -> bool:
+        if new_order.status != OrderStatusEnum.created:
+            return False
+
         for assignment in self._assignments:
             if assignment.order_id == new_order.id:
                 return False

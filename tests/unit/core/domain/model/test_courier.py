@@ -3,10 +3,9 @@ import uuid
 
 import pytest
 
-from src.core.domain.model.assignment import AssignmentStatusEnum
 from src.core.domain.model.courier import CourierAggregate
 from src.core.domain.model.location import Location
-from src.core.domain.model.order import OrderAggregate
+from src.core.domain.model.order import OrderAggregate, OrderStatusEnum
 from src.core.domain.model.volume import Volume
 
 
@@ -173,3 +172,42 @@ def test_take_order_rejects_duplicate_order():
 
     assert result.is_failure()
     assert result.get_error().message == "cant take assignment - too big"
+
+
+def test_can_take_order_rejects_order_with_assigned_status():
+    courier = CourierAggregate(
+        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(value=20)
+    )
+    order = OrderAggregate(
+        id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10), status=OrderStatusEnum.assigned
+    )
+
+    result = courier.can_take_order(order)
+
+    assert result is False
+
+
+def test_can_take_order_rejects_order_with_completed_status():
+    courier = CourierAggregate(
+        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(value=20)
+    )
+    order = OrderAggregate(
+        id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10), status=OrderStatusEnum.completed
+    )
+
+    result = courier.can_take_order(order)
+
+    assert result is False
+
+
+def test_can_take_order_allows_order_with_created_status():
+    courier = CourierAggregate(
+        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(value=20)
+    )
+    order = OrderAggregate(
+        id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10), status=OrderStatusEnum.created
+    )
+
+    result = courier.can_take_order(order)
+
+    assert result is True
