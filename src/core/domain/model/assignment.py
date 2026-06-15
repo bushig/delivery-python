@@ -53,14 +53,14 @@ class Assignment:
     def __hash__(self) -> int:
         return hash(self.id)
 
-    def complete_assignment(self, courier_location: Location) -> Result["Assignment", DomainError]:
+    def complete_assignment(self, courier_location: Location) -> Result[None, DomainError]:
         if self._status == AssignmentStatusEnum.completed:
             return Result.failure(InvalidStatusTransitionError(message="Assignment already completed"))
         if courier_location.calculate_distance(self._location) > 1:
             return Result.failure(AssignmentNotPossibleError(message="Courier has to be in same location as assignment"))
 
         self._status = AssignmentStatusEnum.completed
-        return Result.success(self)
+        return Result.success(None)
 
     @staticmethod
     def create_from_order(order: OrderAggregate) -> "Assignment":

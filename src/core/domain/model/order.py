@@ -22,16 +22,16 @@ class OrderAggregate:
     volume: Volume
     status: OrderStatusEnum = OrderStatusEnum.created
 
-    def change_status(self, new_status: OrderStatusEnum) -> Result["OrderAggregate", DomainError]:
+    def change_status(self, new_status: OrderStatusEnum) -> Result[None, DomainError]:
         if new_status == OrderStatusEnum.assigned:
             if self.status != OrderStatusEnum.created:
                 return Result.failure(InvalidStatusTransitionError(message="Order can be assigned only if it is in status 'Created'"))
             self.status = new_status
-            return Result.success(self)
+            return Result.success(None)
         elif new_status == OrderStatusEnum.completed:
             if self.status != OrderStatusEnum.assigned:
                 return Result.failure(InvalidStatusTransitionError(message="Order can be completed only if it is in status 'Assigned'"))
             self.status = new_status
-            return Result.success(self)
+            return Result.success(None)
         else:
             return Result.failure(InvalidStatusTransitionError(message="Cant change to this status"))

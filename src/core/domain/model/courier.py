@@ -45,15 +45,15 @@ class CourierAggregate:
 
         return True
 
-    def take_order(self, new_order: OrderAggregate) -> Result["CourierAggregate", DomainError]:
+    def take_order(self, new_order: OrderAggregate) -> Result[None, DomainError]:
         if not self.can_take_order(new_order):
             return Result.failure(AssignmentCapacityExceededError(message="cant take assignment - too big"))
 
         new_assignment = Assignment.create_from_order(order=new_order)
         self._assignments.append(new_assignment)
-        return Result.success(self)
+        return Result.success(None)
 
-    def complete_assignment(self, assignment: Assignment) -> Result["CourierAggregate", DomainError]:
+    def complete_assignment(self, assignment: Assignment) -> Result[None, DomainError]:
         if assignment not in self._assignments:
             return Result.failure(AssignmentNotPossibleError(message="cant complete assignment - not in assignment list"))
         if assignment.location.calculate_distance(self._location) > 1:
@@ -63,7 +63,7 @@ class CourierAggregate:
         if result.is_failure():
             return Result.failure(result.get_error())
 
-        return Result.success(self)
+        return Result.success(None)
 
     def change_location(self, new_location: Location):
         self._location = new_location
