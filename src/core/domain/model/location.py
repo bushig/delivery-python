@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict
+from dataclasses import dataclass
 
 from src.libs.errs.error import DomainError
 from src.libs.errs.exceptions import ValueIsOutOfRangeError
@@ -10,9 +10,8 @@ MIN_Y = 1
 MAX_Y = 10
 
 
-class Location(BaseModel):
-    model_config = ConfigDict(frozen=True)
-
+@dataclass(frozen=True)
+class Location:
     x: int
     y: int
 

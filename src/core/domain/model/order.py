@@ -1,7 +1,6 @@
+from dataclasses import dataclass
 from enum import StrEnum
 from uuid import UUID
-
-from pydantic import BaseModel
 
 from src.core.domain.model.location import Location
 from src.core.domain.model.volume import Volume
@@ -16,7 +15,8 @@ class OrderStatusEnum(StrEnum):
     completed = "Completed"
 
 
-class OrderAggregate(BaseModel):
+@dataclass
+class OrderAggregate:
     id: UUID
     location: Location
     volume: Volume

@@ -1,4 +1,4 @@
-from pydantic import ValidationError
+from dataclasses import FrozenInstanceError
 from decimal import Decimal
 
 import pytest
@@ -32,7 +32,7 @@ def test_same_volumes_equal():
 
 def test_volume_mutation_forbidden():
     volume = Volume(value=Decimal(1))
-    with pytest.raises(ValidationError):
+    with pytest.raises(FrozenInstanceError):
         volume.value = Decimal(2)
 
 

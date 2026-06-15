@@ -1,4 +1,4 @@
-from pydantic import ValidationError
+from dataclasses import FrozenInstanceError
 
 import pytest
 
@@ -34,7 +34,7 @@ def test_same_locations_equal():
 
 def test_location_mutation_forbidden():
      location = Location(x=1, y=4)
-     with pytest.raises(ValidationError):
+     with pytest.raises(FrozenInstanceError):
         location.x = 1
 
 

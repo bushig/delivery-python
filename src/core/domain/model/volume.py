@@ -1,15 +1,13 @@
+from dataclasses import dataclass
 from decimal import Decimal
-
-from pydantic import BaseModel, ConfigDict
 
 from src.libs.errs.error import DomainError
 from src.libs.errs.exceptions import ValueIsInvalidError
 from src.libs.errs.result import Result
 
 
-class Volume(BaseModel):
-    model_config = ConfigDict(frozen=True)
-
+@dataclass(frozen=True)
+class Volume:
     value: Decimal
 
     @staticmethod

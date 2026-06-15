@@ -1,6 +1,5 @@
+from dataclasses import dataclass, field
 from uuid import UUID
-
-from pydantic import BaseModel, Field
 
 from src.core.domain.model.assignment import Assignment, AssignmentStatusEnum
 from src.core.domain.model.location import Location
@@ -11,12 +10,13 @@ from src.libs.errs.exceptions import AssignmentCapacityExceededError, Assignment
 from src.libs.errs.result import Result
 
 
-class CourierAggregate(BaseModel):
+@dataclass
+class CourierAggregate:
     id: UUID
     name: str
     location: Location
-    max_volume: Volume = Field(default_factory=lambda: Volume(value=20))
-    assignments: list[Assignment] = Field(default_factory=list)
+    max_volume: Volume = field(default_factory=lambda: Volume(value=20))
+    assignments: list[Assignment] = field(default_factory=list)
 
     def can_take_order(self, new_order: OrderAggregate) -> bool:
         current_total_volume = sum([i.volume.value for i in self.assignments if i.status == AssignmentStatusEnum.assigned])
