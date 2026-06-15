@@ -100,7 +100,7 @@ def test_complete_assignment_returns_failure_when_courier_too_far():
     result = courier.complete_assignment(assignment_id)
 
     assert result.is_failure()
-    assert result.get_error().message == "cant complete assignment - too far away"
+    assert result.get_error().message == "Courier has to be in same location as assignment"
 
 
 def test_change_location_updates_location():

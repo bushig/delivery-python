@@ -62,8 +62,6 @@ class CourierAggregate:
         assignment = next((a for a in self._assignments if a.id == assignment_id), None)
         if assignment is None:
             return Result.failure(AssignmentNotPossibleError(message="cant complete assignment - not in assignment list"))
-        if assignment.location.calculate_distance(self._location) > 1:
-            return Result.failure(AssignmentNotPossibleError(message="cant complete assignment - too far away"))
 
         result = assignment.complete_assignment(self._location)
         if result.is_failure():
