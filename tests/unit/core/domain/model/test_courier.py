@@ -134,3 +134,42 @@ def test_can_take_order_after_completing_assignment():
     order2 = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=15))
 
     assert courier.can_take_order(order2) is True
+
+
+def test_can_take_order_rejects_duplicate_order_assigned():
+    courier = CourierAggregate(
+        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(value=20)
+    )
+    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
+    courier.take_order(order)
+
+    result = courier.can_take_order(order)
+
+    assert result is False
+
+
+def test_can_take_order_rejects_duplicate_order_completed():
+    courier = CourierAggregate(
+        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(value=20)
+    )
+    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
+    courier.take_order(order)
+    assignment_id = courier.assignments[0].id
+    courier.complete_assignment(assignment_id)
+
+    result = courier.can_take_order(order)
+
+    assert result is False
+
+
+def test_take_order_rejects_duplicate_order():
+    courier = CourierAggregate(
+        _id=uuid.uuid4(), _name="Test Courier", _location=Location(x=5, y=5), _max_volume=Volume(value=20)
+    )
+    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(value=10))
+    courier.take_order(order)
+
+    result = courier.take_order(order)
+
+    assert result.is_failure()
+    assert result.get_error().message == "cant take assignment - too big"

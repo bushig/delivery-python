@@ -39,6 +39,10 @@ class CourierAggregate:
         return tuple(self._assignments)
 
     def can_take_order(self, new_order: OrderAggregate) -> bool:
+        for assignment in self._assignments:
+            if assignment.order_id == new_order.id:
+                return False
+
         current_total_volume = sum([i.volume.value for i in self._assignments if i.status == AssignmentStatusEnum.assigned])
         if current_total_volume + new_order.volume.value > self._max_volume.value:
             return False
