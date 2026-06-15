@@ -10,6 +10,10 @@ from src.libs.errs.result import Result
 class Volume:
     value: Decimal
 
+    def __post_init__(self):
+        if self.value <= 0:
+            raise ValueError("Volume can't be negative or zero")
+
     @staticmethod
     def create(value: Decimal) -> Result["Volume", DomainError]:
         if value <= 0:

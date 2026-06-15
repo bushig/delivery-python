@@ -15,6 +15,12 @@ class Location:
     x: int
     y: int
 
+    def __post_init__(self):
+        if not (MIN_X <= self.x <= MAX_X):
+            raise ValueError(f"x must be between {MIN_X} and {MAX_X}")
+        if not (MIN_Y <= self.y <= MAX_Y):
+            raise ValueError(f"y must be between {MIN_Y} and {MAX_Y}")
+
     def calculate_distance(self, other_location: "Location") -> int:
         return abs(self.x - other_location.x) + abs(self.y - other_location.y)
 
