@@ -26,8 +26,7 @@ class Location:
 
     @staticmethod
     def create(x: int, y: int) -> Result["Location", DomainError]:
-        if x < MIN_X or x > MAX_X:
-            return Result.failure(ValueIsOutOfRangeError(message=f"x must be between {MIN_X} and {MAX_X}"))
-        if y < MIN_Y or y > MAX_Y:
-            return Result.failure(ValueIsOutOfRangeError(message=f"y must be between {MIN_Y} and {MAX_Y}"))
-        return Result.success(Location(x=x, y=y))
+        try:
+            return Result.success(Location(x=x, y=y))
+        except ValueError as e:
+            return Result.failure(ValueIsOutOfRangeError(message=str(e)))

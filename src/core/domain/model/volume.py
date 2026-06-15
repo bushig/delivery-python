@@ -16,6 +16,7 @@ class Volume:
 
     @staticmethod
     def create(value: Decimal) -> Result["Volume", DomainError]:
-        if value <= 0:
-            return Result.failure(ValueIsInvalidError(message="Volume can't be negative or zero"))
-        return Result.success(Volume(value=value))
+        try:
+            return Result.success(Volume(value=value))
+        except ValueError as e:
+            return Result.failure(ValueIsInvalidError(message=str(e)))
