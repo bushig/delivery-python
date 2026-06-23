@@ -10,13 +10,28 @@ from src.libs.errs.exceptions import AssignmentCapacityExceededError, Assignment
 from src.libs.errs.result import Result
 
 
-@dataclass
+@dataclass(eq=False)
 class CourierAggregate:
     _id: UUID
     _name: str
     _location: Location
-    _max_volume: Volume = field(default_factory=lambda: Volume(_value=20))
-    _assignments: list[Assignment] = field(default_factory=list)
+    _max_volume: Volume
+    _assignments: list[Assignment]
+
+    def __init__(
+        self,
+        name: str,
+        location: Location,
+        id: UUID | None = None,
+        max_volume: Volume | None = None,
+        assignments: list[Assignment] | None = None
+    ):
+        
+        self._id = id or uuid4()
+        self._name = name
+        self._location = location
+        self._max_volume = max_volume or Volume(_value=20)
+        self._assignments = assignments or []
 
     @property
     def id(self) -> UUID:
@@ -38,6 +53,12 @@ class CourierAggregate:
     def assignments(self) -> tuple[Assignment, ...]:
         return tuple(self._assignments)
 
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, CourierAggregate):
+            raise NotImplementedError("Cannot compare CourierAggregate with other types")
+        return self._id == other._id
+    
+
     def can_take_order(self, new_order: OrderAggregate) -> bool:
         if new_order.status != OrderStatusEnum.created:
             return False
@@ -46,7 +67,7 @@ class CourierAggregate:
             if assignment.order_id == new_order.id:
                 return False
 
-        assigned_volumes = [i.volume for i in self._assignments if i.status == AssignmentStatusEnum.assigned]
+        assigned_volumes = [i.volume for i in self._assignments if i.status == AssignmentStatusEnum.ASSIGNED]
         assigned_volumes.append(new_order.volume)
 
         total_expected_volume = Volume.sum_volumes(assigned_volumes)
@@ -81,3 +102,4 @@ class CourierAggregate:
 
     def change_location(self, new_location: Location):
         self._location = new_location
+

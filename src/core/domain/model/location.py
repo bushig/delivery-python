@@ -10,7 +10,7 @@ MIN_Y = 1
 MAX_Y = 10
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class Location:
     x: int
     y: int
