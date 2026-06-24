@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from uuid import UUID, uuid4
 
 from src.core.domain.model.assignment import Assignment, AssignmentStatusEnum
@@ -26,7 +26,7 @@ class CourierAggregate:
         max_volume: Volume | None = None,
         assignments: list[Assignment] | None = None
     ):
-        
+
         self._id = id or uuid4()
         self._name = name
         self._location = location
@@ -57,10 +57,10 @@ class CourierAggregate:
         if not isinstance(other, CourierAggregate):
             raise NotImplementedError("Cannot compare CourierAggregate with other types")
         return self._id == other._id
-    
+
 
     def can_take_order(self, new_order: OrderAggregate) -> bool:
-        if new_order.status != OrderStatusEnum.created:
+        if new_order.status != OrderStatusEnum.CREATED:
             return False
 
         for assignment in self._assignments:

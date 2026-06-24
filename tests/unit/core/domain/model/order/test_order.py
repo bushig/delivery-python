@@ -11,34 +11,34 @@ from src.core.domain.model.volume import Volume
 def test_order_default_status_is_created():
     order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(_value=10))
 
-    assert order.status == OrderStatusEnum.created
+    assert order.status == OrderStatusEnum.CREATED
 
 
 @pytest.mark.parametrize(
     "initial_status,new_status,should_succeed,error_match",
     [
         pytest.param(
-            OrderStatusEnum.created, OrderStatusEnum.assigned, True, None, id="created_to_assigned"
+            OrderStatusEnum.CREATED, OrderStatusEnum.ASSIGNED, True, None, id="created_to_assigned"
         ),
         pytest.param(
-            OrderStatusEnum.assigned, OrderStatusEnum.completed, True, None, id="assigned_to_completed"
+            OrderStatusEnum.ASSIGNED, OrderStatusEnum.COMPLETED, True, None, id="assigned_to_completed"
         ),
         pytest.param(
-            OrderStatusEnum.assigned,
-            OrderStatusEnum.assigned,
+            OrderStatusEnum.ASSIGNED,
+            OrderStatusEnum.ASSIGNED,
             False,
             "Order can be assigned only if it is in status 'Created'",
             id="cant_assign_from_assigned",
         ),
         pytest.param(
-            OrderStatusEnum.created,
-            OrderStatusEnum.completed,
+            OrderStatusEnum.CREATED,
+            OrderStatusEnum.COMPLETED,
             False,
             "Order can be completed only if it is in status 'Assigned'",
             id="cant_complete_from_created",
         ),
         pytest.param(
-            OrderStatusEnum.created, "InvalidStatus", False, "Cant change to this status", id="invalid_status"
+            OrderStatusEnum.CREATED, "InvalidStatus", False, "Cant change to this status", id="invalid_status"
         ),
     ]
 )
