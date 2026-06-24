@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 
-
-@dataclass(frozen=True)
-class DomainError:
-    code: str
-    message: str
+class DomainError(Exception):
+    def __init__(self, code: str, message: str) -> None:
+        self.code = code
+        self.message = message
+        super().__init__(message)
 
     @staticmethod
     def of(code: str, message: str) -> DomainError:
