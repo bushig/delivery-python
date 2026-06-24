@@ -81,10 +81,10 @@ class CourierAggregate:
             return Result.failure(AssignmentCapacityExceededError(message="cant take assignment - too big"))
 
         new_assignment = Assignment(
-            _id=uuid4(),
-            _order_id=new_order.id,
-            _volume=new_order.volume,
-            _location=new_order.location
+            id=uuid4(),
+            order_id=new_order.id,
+            volume=new_order.volume,
+            location=new_order.location
         )
         self._assignments.append(new_assignment)
         return Result.success(None)
