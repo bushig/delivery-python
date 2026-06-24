@@ -6,8 +6,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
-from adapters.out.postgres.database import engine
 from libs.errs.exceptions import DomainInvariantException, NotFoundException
+from src.di.container import container
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +18,7 @@ async def lifespan(app: FastAPI):
 
     yield
 
-    await engine.dispose()
+    await container.tear_down()
 
     logger.info("Delivery service stopped")
 
