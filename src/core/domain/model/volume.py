@@ -8,7 +8,7 @@ from src.libs.errs.exceptions import ValueIsInvalidError
 from src.libs.errs.result import Result
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class Volume:
     _value: Decimal
 
