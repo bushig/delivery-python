@@ -1,3 +1,4 @@
+import random
 from dataclasses import dataclass
 
 from src.libs.errs.error import DomainError
@@ -30,3 +31,10 @@ class Location:
             return Result.success(Location(x=x, y=y))
         except ValueError as e:
             return Result.failure(ValueIsOutOfRangeError(message=str(e)))
+
+    @staticmethod
+    def generate_random() -> "Location":
+        return Location(
+            x=random.randint(MIN_X, MAX_X),
+            y=random.randint(MIN_Y, MAX_Y)
+        )

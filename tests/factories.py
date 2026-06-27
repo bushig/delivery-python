@@ -5,6 +5,7 @@ from decimal import Decimal
 from typing import Any, TypeVar
 from uuid import uuid4
 
+from src.core.domain.model.address import Address
 from src.core.domain.model.courier import CourierAggregate
 from src.core.domain.model.location import MAX_X, MAX_Y, MIN_X, MIN_Y, Location
 from src.core.domain.model.order import OrderAggregate, OrderStatusEnum
@@ -17,6 +18,18 @@ class Factory[T]:
     @classmethod
     def build(cls, **overrides: Any) -> T:
         raise NotImplementedError
+
+
+class AddressFactory(Factory[Address]):
+    @classmethod
+    def build(cls, **overrides: Any) -> Address:
+        return Address(
+            country=overrides.get("country", "Russia"),
+            city=overrides.get("city", "Moscow"),
+            street=overrides.get("street", "Tverskaya"),
+            house=overrides.get("house", "1"),
+            apartment=overrides.get("apartment", "1"),
+        )
 
 
 class LocationFactory(Factory[Location]):
