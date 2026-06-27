@@ -3,20 +3,18 @@
 
 from __future__ import annotations
 
-from typing import List, Optional, Union
+from typing import Optional
 from uuid import UUID
 
 from fastapi import APIRouter, Path
+from that_depends import inject
+
+from src.core.application.commands.complete_order import CompleteOrderCommand, complete_order as complete_order_use_case
+from src.core.domain.ports import UnitOfWork
+from src.di.container import container
 
 from .models import (
-    Courier,
-    CreateCourierResponse,
-    CreateOrderResponse,
     Error,
-    Location,
-    NewCourier,
-    NewOrder,
-    Order,
 )
 
 router = APIRouter(tags=['CompleteOrder'])
@@ -25,6 +23,7 @@ router = APIRouter(tags=['CompleteOrder'])
 @router.post(
     '/api/v1/couriers/{courierId}/orders/{orderId}/complete',
     response_model=None,
+    status_code=204,
     responses={
         '400': {'model': Error},
         '409': {'model': Error},
@@ -32,11 +31,14 @@ router = APIRouter(tags=['CompleteOrder'])
     },
     tags=['CompleteOrder'],
 )
-def complete_order(
+@inject
+async def complete_order(
     courier_id: UUID = Path(..., alias='courierId'),
     order_id: UUID = Path(..., alias='orderId'),
-) -> Optional[Error]:
+    uow: UnitOfWork = container.unit_of_work,
+) -> None:
     """
     Завершить заказ
     """
-    pass
+    cmd = CompleteOrderCommand(courier_id=courier_id, order_id=order_id)
+    await complete_order_use_case(cmd, uow)

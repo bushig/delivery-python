@@ -3,19 +3,18 @@
 
 from __future__ import annotations
 
-from typing import List, Optional, Union
-from uuid import UUID
+from typing import List, Union
 
-from fastapi import APIRouter, Path
+from fastapi import APIRouter
+from that_depends import inject
+
+from src.core.application.queries.get_not_completed_orders import get_not_completed_orders as get_not_completed_orders_use_case
+from src.core.domain.ports import UnitOfWork
+from src.di.container import container
 
 from .models import (
-    Courier,
-    CreateCourierResponse,
-    CreateOrderResponse,
     Error,
     Location,
-    NewCourier,
-    NewOrder,
     Order,
 )
 
@@ -28,8 +27,17 @@ router = APIRouter(tags=['GetOrders'])
     responses={'400': {'model': Error}, '500': {'model': Error}},
     tags=['GetOrders'],
 )
-def get_orders() -> Union[List[Order], Error]:
+@inject
+async def get_orders(uow: UnitOfWork = container.unit_of_work) -> List[Order]:
     """
     Получить все незавершенные заказы
     """
-    pass
+    dtos = await get_not_completed_orders_use_case(uow)
+
+    return [
+        Order(
+            id=dto.id,
+            location=Location(x=dto.location.x, y=dto.location.y),
+        )
+        for dto in dtos
+    ]

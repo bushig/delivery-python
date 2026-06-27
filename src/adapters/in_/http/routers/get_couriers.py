@@ -3,20 +3,19 @@
 
 from __future__ import annotations
 
-from typing import List, Optional, Union
-from uuid import UUID
+from typing import List, Union
 
-from fastapi import APIRouter, Path
+from fastapi import APIRouter
+from that_depends import inject
+
+from src.core.application.queries.get_all_couriers import get_all_couriers as get_all_couriers_use_case
+from src.core.domain.ports import UnitOfWork
+from src.di.container import container
 
 from .models import (
     Courier,
-    CreateCourierResponse,
-    CreateOrderResponse,
     Error,
     Location,
-    NewCourier,
-    NewOrder,
-    Order,
 )
 
 router = APIRouter(tags=['GetCouriers'])
@@ -28,8 +27,18 @@ router = APIRouter(tags=['GetCouriers'])
     responses={'400': {'model': Error}, '500': {'model': Error}},
     tags=['GetCouriers'],
 )
-def get_couriers() -> Union[List[Courier], Error]:
+@inject
+async def get_couriers(uow: UnitOfWork = container.unit_of_work) -> List[Courier]:
     """
     Получить всех курьеров
     """
-    pass
+    dtos = await get_all_couriers_use_case(uow)
+
+    return [
+        Courier(
+            id=dto.id,
+            name=dto.name,
+            location=Location(x=dto.location.x, y=dto.location.y),
+        )
+        for dto in dtos
+    ]

@@ -3,20 +3,20 @@
 
 from __future__ import annotations
 
-from typing import List, Optional, Union
+from typing import Union
 from uuid import UUID
 
-from fastapi import APIRouter, Path
+from fastapi import APIRouter
+from that_depends import inject
+
+from src.core.application.commands.create_courier import CreateCourierCommand, create_courier as create_courier_use_case
+from src.core.domain.ports import UnitOfWork
+from src.di.container import container
 
 from .models import (
-    Courier,
     CreateCourierResponse,
-    CreateOrderResponse,
     Error,
-    Location,
     NewCourier,
-    NewOrder,
-    Order,
 )
 
 router = APIRouter(tags=['CreateCourier'])
@@ -33,8 +33,12 @@ router = APIRouter(tags=['CreateCourier'])
     },
     tags=['CreateCourier'],
 )
-def create_courier(body: NewCourier) -> Union[CreateCourierResponse, Error]:
+@inject
+async def create_courier(body: NewCourier, uow: UnitOfWork = container.unit_of_work) -> CreateCourierResponse:
     """
     Добавить курьера
     """
-    pass
+    cmd = CreateCourierCommand(name=body.name)
+    await create_courier_use_case(cmd, uow)
+
+    return CreateCourierResponse(courierId=body.id)

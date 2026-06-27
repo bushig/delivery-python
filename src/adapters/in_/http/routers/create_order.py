@@ -3,20 +3,23 @@
 
 from __future__ import annotations
 
+from decimal import Decimal
 from typing import List, Optional, Union
 from uuid import UUID
 
 from fastapi import APIRouter, Path
+from that_depends import inject
+
+from src.core.application.commands.create_order import CreateOrderCommand, create_order as create_order_use_case
+from src.core.domain.model.address import Address
+from src.core.domain.model.volume import Volume
+from src.core.domain.ports import UnitOfWork
+from src.di.container import container
 
 from .models import (
-    Courier,
-    CreateCourierResponse,
     CreateOrderResponse,
     Error,
-    Location,
-    NewCourier,
     NewOrder,
-    Order,
 )
 
 router = APIRouter(tags=['CreateOrder'])
@@ -33,8 +36,25 @@ router = APIRouter(tags=['CreateOrder'])
     },
     tags=['CreateOrder'],
 )
-def create_order(body: NewOrder) -> Union[CreateOrderResponse, Error]:
+@inject
+async def create_order(body: NewOrder, uow: UnitOfWork = container.unit_of_work) -> CreateOrderResponse:
     """
     Создать заказ
     """
-    pass
+    address = Address(
+        country=body.address.country,
+        city=body.address.city,
+        street=body.address.street,
+        house=body.address.house,
+        apartment=body.address.apartment,
+    )
+    volume = Volume(_value=Decimal(str(body.volume))) if body.volume is not None else Volume(_value=Decimal("1"))
+
+    cmd = CreateOrderCommand(
+        order_id=body.id,
+        address=address,
+        volume=volume,
+    )
+    await create_order_use_case(cmd, uow)
+
+    return CreateOrderResponse(orderId=body.id)
