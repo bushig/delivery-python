@@ -96,3 +96,30 @@ async def test_update_not_found(order_repo: OrderRepositoryPostgres) -> None:
 
     with pytest.raises(NotFoundException):
         await order_repo.update(order)
+
+
+async def test_get_all_not_completed(order_repo: OrderRepositoryPostgres, db_session: AsyncSession) -> None:
+    order_created = OrderAggregateFactory.build(status=OrderStatusEnum.CREATED)
+    order_assigned = OrderAggregateFactory.build(status=OrderStatusEnum.ASSIGNED)
+    order_completed = OrderAggregateFactory.build(status=OrderStatusEnum.COMPLETED)
+
+    await order_repo.add(order_created)
+    await order_repo.add(order_assigned)
+    await order_repo.add(order_completed)
+    await db_session.commit()
+
+    result = await order_repo.get_all_not_completed()
+
+    assert len(result) == 2
+    statuses = {o.status for o in result}
+    assert statuses == {OrderStatusEnum.CREATED, OrderStatusEnum.ASSIGNED}
+
+
+async def test_get_all_not_completed_empty(order_repo: OrderRepositoryPostgres, db_session: AsyncSession) -> None:
+    order_completed = OrderAggregateFactory.build(status=OrderStatusEnum.COMPLETED)
+    await order_repo.add(order_completed)
+    await db_session.commit()
+
+    result = await order_repo.get_all_not_completed()
+
+    assert len(result) == 0
