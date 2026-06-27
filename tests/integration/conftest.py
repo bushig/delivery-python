@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import AsyncGenerator
+from collections.abc import AsyncGenerator, Callable
 
 import pytest
 import pytest_asyncio
@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from testcontainers.postgres import PostgresContainer
 
 from src.adapters.out.postgres.database import Base, Database
+from src.adapters.out.postgres.unit_of_work import UnitOfWorkPostgres
 
 
 @pytest.fixture(scope="session")
@@ -40,3 +41,10 @@ async def db_session(database: Database) -> AsyncGenerator[AsyncSession, None]:
     finally:
         await session.rollback()
         await session.close()
+
+
+@pytest.fixture
+def unit_of_work_factory(database: Database) -> Callable[[], UnitOfWorkPostgres]:
+    def _create_uow() -> UnitOfWorkPostgres:
+        return UnitOfWorkPostgres(database)
+    return _create_uow
