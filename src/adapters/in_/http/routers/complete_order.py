@@ -3,15 +3,15 @@
 
 from __future__ import annotations
 
-from typing import Optional
 from uuid import UUID
 
-from fastapi import APIRouter, Path
+from fastapi import APIRouter, Depends, Path
 from that_depends import inject
 
-from src.core.application.commands.complete_order import CompleteOrderCommand, complete_order as complete_order_use_case
+from src.core.application.commands.complete_order import CompleteOrderCommand
+from src.core.application.commands.complete_order import complete_order as complete_order_use_case
 from src.core.domain.ports import UnitOfWork
-from src.di.container import container
+from src.di.container import Container
 
 from ..models import (
     Error,
@@ -35,7 +35,7 @@ router = APIRouter(tags=['CompleteOrder'])
 async def complete_order(
     courier_id: UUID = Path(..., alias='courierId'),
     order_id: UUID = Path(..., alias='orderId'),
-    uow: UnitOfWork = container.unit_of_work,
+    uow: UnitOfWork = Depends(Container.unit_of_work),
 ) -> None:
     """
     Завершить заказ

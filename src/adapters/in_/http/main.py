@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import APIRouter
 
 from .routers import (
     complete_order,
@@ -9,15 +9,11 @@ from .routers import (
     move_courier,
 )
 
-app = FastAPI(
-    version='1.0.0',
-    title='Swagger Delivery',
-    description='Отвечает за учет курьеров, диспетчеризацию доставок, доставку',
-)
+http_router = APIRouter()
 
-app.include_router(create_order)
-app.include_router(complete_order)
-app.include_router(move_courier)
-app.include_router(get_orders)
-app.include_router(create_courier)
-app.include_router(get_couriers)
+http_router.include_router(create_order)
+http_router.include_router(complete_order)
+http_router.include_router(move_courier)
+http_router.include_router(get_orders)
+http_router.include_router(create_courier)
+http_router.include_router(get_couriers)

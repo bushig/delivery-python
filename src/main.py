@@ -7,9 +7,9 @@ from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
-from libs.errs.exceptions import DomainInvariantException, NotFoundException
-from src.adapters.in_.http.main import router as http_router
-from src.di.container import container
+from src.adapters.in_.http.main import http_router
+from src.di.container import Container
+from src.libs.errs.exceptions import DomainInvariantException, NotFoundException
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +20,7 @@ async def lifespan(app: FastAPI):
 
     yield
 
-    await container.tear_down()
+    await Container.tear_down()
 
     logger.info("Delivery service stopped")
 

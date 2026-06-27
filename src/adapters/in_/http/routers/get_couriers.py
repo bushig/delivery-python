@@ -3,14 +3,12 @@
 
 from __future__ import annotations
 
-from typing import List, Union
-
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from that_depends import inject
 
 from src.core.application.queries.get_all_couriers import get_all_couriers as get_all_couriers_use_case
 from src.core.domain.ports import UnitOfWork
-from src.di.container import container
+from src.di.container import Container
 
 from ..models import (
     Courier,
@@ -23,12 +21,12 @@ router = APIRouter(tags=['GetCouriers'])
 
 @router.get(
     '/api/v1/couriers',
-    response_model=List[Courier],
+    response_model=list[Courier],
     responses={'400': {'model': Error}, '500': {'model': Error}},
     tags=['GetCouriers'],
 )
 @inject
-async def get_couriers(uow: UnitOfWork = container.unit_of_work) -> List[Courier]:
+async def get_couriers(uow: UnitOfWork = Depends(Container.unit_of_work)) -> list[Courier]:
     """
     Получить всех курьеров
     """

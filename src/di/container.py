@@ -23,4 +23,4 @@ class Container(BaseContainer):
     dispatch_domain_service = Factory(DispatchDomainService)
 
 
-container = Container()
+

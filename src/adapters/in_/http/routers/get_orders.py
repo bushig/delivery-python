@@ -3,14 +3,14 @@
 
 from __future__ import annotations
 
-from typing import List, Union
-
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from that_depends import inject
 
-from src.core.application.queries.get_not_completed_orders import get_not_completed_orders as get_not_completed_orders_use_case
+from src.core.application.queries.get_not_completed_orders import (
+    get_not_completed_orders as get_not_completed_orders_use_case,
+)
 from src.core.domain.ports import UnitOfWork
-from src.di.container import container
+from src.di.container import Container
 
 from ..models import (
     Error,
@@ -23,12 +23,12 @@ router = APIRouter(tags=['GetOrders'])
 
 @router.get(
     '/api/v1/orders/active',
-    response_model=List[Order],
+    response_model=list[Order],
     responses={'400': {'model': Error}, '500': {'model': Error}},
     tags=['GetOrders'],
 )
 @inject
-async def get_orders(uow: UnitOfWork = container.unit_of_work) -> List[Order]:
+async def get_orders(uow: UnitOfWork = Depends(Container.unit_of_work)) -> list[Order]:
     """
     Получить все незавершенные заказы
     """
