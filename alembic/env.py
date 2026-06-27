@@ -4,7 +4,7 @@ from alembic import context
 from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
-from delivery.adapters.out.postgres.database import Base
+from src.adapters.out.postgres.database import Base
 
 config = context.config
 
