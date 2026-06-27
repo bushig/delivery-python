@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from src.adapters.in_.http.main import http_router
@@ -43,6 +44,14 @@ app = FastAPI(
     title="Delivery Service",
     version="1.0.0",
     lifespan=lifespan,
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,  # Read the warning below if you need this True!
+    allow_methods=["*"],      # Allows all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],      # Allows all custom/standard headers
 )
 
 
