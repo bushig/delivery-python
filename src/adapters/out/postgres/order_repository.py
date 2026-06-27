@@ -48,3 +48,11 @@ class OrderRepositoryPostgres:
         result = await self._session.execute(stmt)
         models = result.scalars().all()
         return [m._to_domain() for m in models]
+
+    async def get_all_not_completed(self) -> list[OrderAggregate]:
+        stmt = select(OrderModel).where(
+            OrderModel.status.in_([OrderStatusEnum.CREATED, OrderStatusEnum.ASSIGNED])
+        )
+        result = await self._session.execute(stmt)
+        models = result.scalars().all()
+        return [m._to_domain() for m in models]
