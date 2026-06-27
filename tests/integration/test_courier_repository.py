@@ -1,17 +1,14 @@
 from __future__ import annotations
 
-from decimal import Decimal
 from uuid import uuid4
 
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.adapters.out.postgres.courier_repository import CourierRepositoryPostgres
-from src.core.domain.model.courier import CourierAggregate
 from src.core.domain.model.location import Location
-from src.core.domain.model.order import OrderAggregate, OrderStatusEnum
-from src.core.domain.model.volume import Volume
 from src.libs.errs.exceptions import NotFoundException
+from tests.factories import CourierAggregateFactory, OrderAggregateFactory
 
 
 @pytest.fixture
@@ -19,32 +16,8 @@ def courier_repo(db_session: AsyncSession) -> CourierRepositoryPostgres:
     return CourierRepositoryPostgres(db_session)
 
 
-def _make_courier(
-    name: str = "Courier",
-    location: Location | None = None,
-    max_volume: Volume | None = None,
-) -> CourierAggregate:
-    return CourierAggregate(
-        name=name,
-        location=location or Location(x=1, y=1),
-        max_volume=max_volume or Volume(_value=Decimal("20.0")),
-    )
-
-
-def _make_order(
-    location: Location | None = None,
-    volume: Volume | None = None,
-) -> OrderAggregate:
-    return OrderAggregate(
-        id=uuid4(),
-        location=location or Location(x=2, y=2),
-        volume=volume or Volume(_value=Decimal("5.0")),
-        status=OrderStatusEnum.CREATED,
-    )
-
-
 async def test_add_and_get_by_id(courier_repo: CourierRepositoryPostgres, db_session: AsyncSession) -> None:
-    courier = _make_courier()
+    courier = CourierAggregateFactory.build()
 
     await courier_repo.add(courier)
     await db_session.commit()
@@ -53,9 +26,9 @@ async def test_add_and_get_by_id(courier_repo: CourierRepositoryPostgres, db_ses
 
     assert result is not None
     assert result.id == courier.id
-    assert result.name == "Courier"
-    assert result.location == Location(x=1, y=1)
-    assert result.max_volume == Volume(_value=Decimal("20.0"))
+    assert result.name == courier.name
+    assert result.location == courier.location
+    assert result.max_volume == courier.max_volume
     assert result.assignments == ()
 
 
@@ -66,8 +39,8 @@ async def test_get_by_id_not_found(courier_repo: CourierRepositoryPostgres) -> N
 
 
 async def test_get_all(courier_repo: CourierRepositoryPostgres, db_session: AsyncSession) -> None:
-    c1 = _make_courier(name="Alice")
-    c2 = _make_courier(name="Bob")
+    c1 = CourierAggregateFactory.build(name="Alice")
+    c2 = CourierAggregateFactory.build(name="Bob")
 
     await courier_repo.add(c1)
     await courier_repo.add(c2)
@@ -81,7 +54,7 @@ async def test_get_all(courier_repo: CourierRepositoryPostgres, db_session: Asyn
 
 
 async def test_update(courier_repo: CourierRepositoryPostgres, db_session: AsyncSession) -> None:
-    courier = _make_courier()
+    courier = CourierAggregateFactory.build()
     await courier_repo.add(courier)
     await db_session.commit()
 
@@ -95,8 +68,8 @@ async def test_update(courier_repo: CourierRepositoryPostgres, db_session: Async
 
 
 async def test_update_add_assignment(courier_repo: CourierRepositoryPostgres, db_session: AsyncSession) -> None:
-    courier = _make_courier()
-    order = _make_order()
+    courier = CourierAggregateFactory.build()
+    order = OrderAggregateFactory.build()
     await courier_repo.add(courier)
     await db_session.commit()
 
@@ -111,7 +84,7 @@ async def test_update_add_assignment(courier_repo: CourierRepositoryPostgres, db
 
 
 async def test_update_not_found(courier_repo: CourierRepositoryPostgres) -> None:
-    courier = _make_courier()
+    courier = CourierAggregateFactory.build()
 
     with pytest.raises(NotFoundException):
         await courier_repo.update(courier)

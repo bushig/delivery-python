@@ -1,36 +1,13 @@
 from __future__ import annotations
 
-from decimal import Decimal
-from uuid import uuid4
-
 from src.adapters.out.postgres.database import Database
 from src.adapters.out.postgres.unit_of_work import UnitOfWorkPostgres
-from src.core.domain.model.courier import CourierAggregate
-from src.core.domain.model.location import Location
-from src.core.domain.model.order import OrderAggregate, OrderStatusEnum
-from src.core.domain.model.volume import Volume
-
-
-def _make_order() -> OrderAggregate:
-    return OrderAggregate(
-        id=uuid4(),
-        location=Location(x=3, y=3),
-        volume=Volume(_value=Decimal("5.0")),
-        status=OrderStatusEnum.CREATED,
-    )
-
-
-def _make_courier(name: str = "Courier") -> CourierAggregate:
-    return CourierAggregate(
-        name=name,
-        location=Location(x=1, y=1),
-        max_volume=Volume(_value=Decimal("20.0")),
-    )
+from tests.factories import CourierAggregateFactory, OrderAggregateFactory
 
 
 async def test_commit_saves_both_aggregates(database: Database) -> None:
-    order = _make_order()
-    courier = _make_courier()
+    order = OrderAggregateFactory.build()
+    courier = CourierAggregateFactory.build()
 
     async with UnitOfWorkPostgres(database) as uow:
         await uow.orders.add(order)
@@ -48,8 +25,8 @@ async def test_commit_saves_both_aggregates(database: Database) -> None:
 
 
 async def test_rollback_on_exception(database: Database) -> None:
-    order = _make_order()
-    courier = _make_courier()
+    order = OrderAggregateFactory.build()
+    courier = CourierAggregateFactory.build()
 
     try:
         async with UnitOfWorkPostgres(database) as uow:

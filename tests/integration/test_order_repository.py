@@ -1,16 +1,14 @@
 from __future__ import annotations
 
-from decimal import Decimal
-from uuid import UUID, uuid4
+from uuid import uuid4
 
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.adapters.out.postgres.order_repository import OrderRepositoryPostgres
-from src.core.domain.model.location import Location
-from src.core.domain.model.order import OrderAggregate, OrderStatusEnum
-from src.core.domain.model.volume import Volume
+from src.core.domain.model.order import OrderStatusEnum
 from src.libs.errs.exceptions import NotFoundException
+from tests.factories import OrderAggregateFactory
 
 
 @pytest.fixture
@@ -18,22 +16,8 @@ def order_repo(db_session: AsyncSession) -> OrderRepositoryPostgres:
     return OrderRepositoryPostgres(db_session)
 
 
-def _make_order(
-    id: UUID | None = None,
-    location: Location | None = None,
-    volume: Volume | None = None,
-    status: OrderStatusEnum | None = None,
-) -> OrderAggregate:
-    return OrderAggregate(
-        id=id or uuid4(),
-        location=location or Location(x=1, y=1),
-        volume=volume or Volume(_value=Decimal("5.0")),
-        status=status or OrderStatusEnum.CREATED,
-    )
-
-
 async def test_add_and_get_by_id(order_repo: OrderRepositoryPostgres, db_session: AsyncSession) -> None:
-    order = _make_order()
+    order = OrderAggregateFactory.build()
 
     await order_repo.add(order)
     await db_session.commit()
@@ -54,8 +38,8 @@ async def test_get_by_id_not_found(order_repo: OrderRepositoryPostgres) -> None:
 
 
 async def test_get_any_in_created_status(order_repo: OrderRepositoryPostgres, db_session: AsyncSession) -> None:
-    order1 = _make_order(status=OrderStatusEnum.CREATED)
-    order2 = _make_order(status=OrderStatusEnum.ASSIGNED)
+    order1 = OrderAggregateFactory.build(status=OrderStatusEnum.CREATED)
+    order2 = OrderAggregateFactory.build(status=OrderStatusEnum.ASSIGNED)
 
     await order_repo.add(order1)
     await order_repo.add(order2)
@@ -68,7 +52,7 @@ async def test_get_any_in_created_status(order_repo: OrderRepositoryPostgres, db
 
 
 async def test_get_any_in_created_status_empty(order_repo: OrderRepositoryPostgres, db_session: AsyncSession) -> None:
-    order = _make_order(status=OrderStatusEnum.ASSIGNED)
+    order = OrderAggregateFactory.build(status=OrderStatusEnum.ASSIGNED)
     await order_repo.add(order)
     await db_session.commit()
 
@@ -78,9 +62,9 @@ async def test_get_any_in_created_status_empty(order_repo: OrderRepositoryPostgr
 
 
 async def test_get_all_in_assigned_status(order_repo: OrderRepositoryPostgres, db_session: AsyncSession) -> None:
-    order1 = _make_order(status=OrderStatusEnum.ASSIGNED)
-    order2 = _make_order(status=OrderStatusEnum.ASSIGNED)
-    order3 = _make_order(status=OrderStatusEnum.CREATED)
+    order1 = OrderAggregateFactory.build(status=OrderStatusEnum.ASSIGNED)
+    order2 = OrderAggregateFactory.build(status=OrderStatusEnum.ASSIGNED)
+    order3 = OrderAggregateFactory.build(status=OrderStatusEnum.CREATED)
 
     await order_repo.add(order1)
     await order_repo.add(order2)
@@ -94,7 +78,7 @@ async def test_get_all_in_assigned_status(order_repo: OrderRepositoryPostgres, d
 
 
 async def test_update(order_repo: OrderRepositoryPostgres, db_session: AsyncSession) -> None:
-    order = _make_order()
+    order = OrderAggregateFactory.build()
     await order_repo.add(order)
     await db_session.commit()
 
@@ -108,7 +92,7 @@ async def test_update(order_repo: OrderRepositoryPostgres, db_session: AsyncSess
 
 
 async def test_update_not_found(order_repo: OrderRepositoryPostgres) -> None:
-    order = _make_order()
+    order = OrderAggregateFactory.build()
 
     with pytest.raises(NotFoundException):
         await order_repo.update(order)
