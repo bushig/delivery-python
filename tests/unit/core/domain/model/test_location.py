@@ -65,3 +65,11 @@ def test_locations_not_equal(location_1: Location, location_2: Location):
 )
 def test_locations_distance(location_1: Location, location_2: Location, distance: int):
      assert location_1.calculate_distance(location_2) == distance
+
+
+def test_location_generate_random():
+    location = Location.generate_random()
+
+    assert isinstance(location, Location)
+    assert 1 <= location.x <= 10
+    assert 1 <= location.y <= 10

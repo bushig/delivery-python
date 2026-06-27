@@ -3,7 +3,8 @@ revision = 3
 requires-python = ">=3.12"
 resolution-markers = [
     "python_full_version >= '3.15'",
-    "python_full_version < '3.15'",
+    "python_full_version == '3.14.*'",
+    "python_full_version < '3.14'",
 ]
 
 [[package]]
@@ -80,6 +81,27 @@ dependencies = [
 sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/19/14/2c5dd9f512b66549ae92767a9c7b330ae88e1932ca57876909410251fe13/anyio-4.13.0.tar.gz", hash = "sha256:334b70e641fd2221c1505b3890c69882fe4a2df910cba14d97019b90b24439dc" }
 wheels = [
     { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/da/42/e921fccf5015463e32a3cf6ee7f980a6ed0f395ceeaa45060b61d86486c2/anyio-4.13.0-py3-none-any.whl", hash = "sha256:08b310f9e24a9594186fd75b4f73f4a4152069e3853f1ed8bfbf58369f4ad708" },
+]
+
+[[package]]
+name = "apscheduler"
+version = "3.11.2"
+source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
+dependencies = [
+    { name = "tzlocal" },
+]
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/07/12/3e4389e5920b4c1763390c6d371162f3784f86f85cd6d6c1bfe68eef14e2/apscheduler-3.11.2.tar.gz", hash = "sha256:2a9966b052ec805f020c8c4c3ae6e6a06e24b1bf19f2e11d91d8cca0473eef41" }
+wheels = [
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/9f/64/2e54428beba8d9992aa478bb8f6de9e4ecaa5f8f513bcfd567ed7fb0262d/apscheduler-3.11.2-py3-none-any.whl", hash = "sha256:ce005177f741409db4e4dd40a7431b76feb856b9dd69d57e0da49d6715bfd26d" },
+]
+
+[[package]]
+name = "argcomplete"
+version = "3.6.3"
+source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/38/61/0b9ae6399dd4a58d8c1b1dc5a27d6f2808023d0b5dd3104bb99f45a33ff6/argcomplete-3.6.3.tar.gz", hash = "sha256:62e8ed4fd6a45864acc8235409461b72c9a28ee785a2011cc5eb78318786c89c" }
+wheels = [
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/74/f5/9373290775639cb67a2fce7f629a1c240dce9f12fe927bc32b2736e16dfc/argcomplete-3.6.3-py3-none-any.whl", hash = "sha256:f5007b3a600ccac5d25bbce33089211dfd49eab4a7718da3f10e3082525a92ce" },
 ]
 
 [[package]]
@@ -172,6 +194,38 @@ wheels = [
 ]
 
 [[package]]
+name = "black"
+version = "26.5.1"
+source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
+dependencies = [
+    { name = "click" },
+    { name = "mypy-extensions" },
+    { name = "packaging" },
+    { name = "pathspec" },
+    { name = "platformdirs" },
+    { name = "pytokens" },
+]
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/c0/37/5628dd55bf2b34257fc7603f0fe97c40e3aaf24265f416a9c85c95ca1436/black-26.5.1.tar.gz", hash = "sha256:dd321f668053961824bcc1be1cc1df748b2d7e4fa28086b08331e577b0100a73" }
+wheels = [
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/24/99/7744b906703228264ef73bdd534df88ec1ef3de45c4e78f6d31b9e32d0c9/black-26.5.1-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:4ad6fa01f941920f54f2bbb35f3df7673428a0ef98a0b0840c2eaef3b110efa8" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/b7/c0/c5a3b1636dfd09c42534f2b3cf33506814f6d3e066fb0879ffa16c1ae860/black-26.5.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:3915f256e75a2d7cf88d8953d37f780455dc586cc72dee059c528fe77f581217" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/1f/0e/36044316b65ca471d3bb6d3703fd06fb50c6b727c3562f6a5a3153634f88/black-26.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:9d98d4137277c75dfb898ec8d846c4fd68ba1e9cf77f95e2865c203dc18f4c3d" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/b3/33/dafc5808c2af43672912111d7c3354af1615f7e2be3bed7a878461abbe4d/black-26.5.1-cp312-cp312-win_amd64.whl", hash = "sha256:a1dca32d9f1784af512a13410ec204c6f7f0aa9797a111c42e1c03449821c264" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/82/14/b965ee6ad2a311f28bdbf692def3ee9848d2ae289dab28b27657fcee3e78/black-26.5.1-cp312-cp312-win_arm64.whl", hash = "sha256:1037d5ac7b7b310b2632ad867ec8d0e4c4819dcdb0b820f63135da746a24e418" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/3f/5c/c384363980e11e25ca6b93205949bb331fbf35f4e0dbec376dfa6326cec8/black-26.5.1-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:2b36cf2ddf5566e205f6535f782a62194a184d33e175b64ae8c40b1737522be3" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/0b/df/9f31c5e0babbfed77d505fc5d120beb98b21b33feaeded3924ea941fe360/black-26.5.1-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:1f7ea64ebfa01b50f693508fc39f875e264446d3b097088f84f203b9d09618a0" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/fb/24/8e7b9a2fa61b0afd82209efe937557d180a1fa055bd7f6161eb9defc3719/black-26.5.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:ecb3e624844c798144e9bd986954e0adc81d8911a1f30f375e1252fe26e8c294" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/49/ad/b4e0d9365ba8ac34f6bbab62a4b1b2dd5d618fac3fa1b8db968c844201b5/black-26.5.1-cp313-cp313-win_amd64.whl", hash = "sha256:e1a26503279b6b310669fb0b219c39e4820b77e8189fe80f522bb511f247db0a" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/a1/4b/652b859bf5df88a751c30451b09338f7fd26a77d1271c666992f836b7711/black-26.5.1-cp313-cp313-win_arm64.whl", hash = "sha256:5c34b25da232ead53a6f335b76dbea124f4d152ad568b9080d6f944bc2b34b52" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/a6/16/a8da8eb208c51c7f4ce74609a45d0dcc6d8a2141e45e81ee5289d1bb0d59/black-26.5.1-cp314-cp314-macosx_10_15_x86_64.whl", hash = "sha256:e88976690a64b0af98312ca958415849cb42423423c5f2ee74af4b49a97a2168" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/11/8a/a479296a19e383b70a725882a6cf3d786540601ff03cabbaaf1cce864c5a/black-26.5.1-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:32d5ea7f6c8bdfa6e648326ebca1f02b0764e2a029edc6f8dce2627e19d468c3" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/81/6b/cfaf3d39f25132c156a068f6b805576c9103a84086019507c70e1911ee7d/black-26.5.1-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:ea8d16dc41655aa113cd64665e7219446cd7e4ff2248d7178eaa905190c86b18" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/66/76/302e313964bcff7e28df329d39f84f5270095730d85ff0acc260610a0d82/black-26.5.1-cp314-cp314-win_amd64.whl", hash = "sha256:577f21094ea469ef92ec1adaf2c9441a226d2144d01a5be2fa823cecf6543e50" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/27/4e/a3827e35e0e567f9f9ee59e2a0ab979267dca98718f25547ca8c6733afd4/black-26.5.1-cp314-cp314-win_arm64.whl", hash = "sha256:ed1a20af114c301a0269bf01163d51dbef72737fd65f850001e7cbe7f3c7abae" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/94/51/f975cae76d44274cc2868dc9040ac5d58d464784610234455b4e7b19c6ef/black-26.5.1-py3-none-any.whl", hash = "sha256:4ed7f7da04046d2e488437170797d3b4a4ad83906683bcb7dfc68b673bbce5e2" },
+]
+
+[[package]]
 name = "certifi"
 version = "2026.5.20"
 source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
@@ -255,14 +309,14 @@ wheels = [
 
 [[package]]
 name = "click"
-version = "8.4.1"
+version = "8.1.8"
 source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
 dependencies = [
     { name = "colorama", marker = "sys_platform == 'win32'" },
 ]
-sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/9b/98/518d8e5081007684232226f475082b30087d0f585e8457db087298259f49/click-8.4.1.tar.gz", hash = "sha256:918b5633eddf6b41c32d4f454bf0de810065c74e3f7dbf8ee5452f8be88d3e96" }
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/b9/2e/0090cbf739cee7d23781ad4b89a9894a41538e4fcf4c31dcdd705b78eb8b/click-8.1.8.tar.gz", hash = "sha256:ed53c9d8990d83c2a27deae68e4ee337473f6330c040a31d4225c9574d16096a" }
 wheels = [
-    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/c7/0d/67e5b4109ea4a837e80daa87c2c696711955e40449a97e8926672534def2/click-8.4.1-py3-none-any.whl", hash = "sha256:482be17c6991b8c19c5429a1e995d9b0efdbb63172824c41f99965dc0ade8ec2" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/7e/d4/7ebdbd03970677812aac39c869717059dbb71a4cfc033ca6e5221787892c/click-8.1.8-py3-none-any.whl", hash = "sha256:63c132bbbed01578a06712a2d1f497bb62d9c1c0d329b7903a866228027263b2" },
 ]
 
 [[package]]
@@ -275,17 +329,43 @@ wheels = [
 ]
 
 [[package]]
+name = "datamodel-code-generator"
+version = "0.65.1"
+source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
+dependencies = [
+    { name = "argcomplete" },
+    { name = "black", marker = "sys_platform != 'emscripten'" },
+    { name = "genson" },
+    { name = "inflect" },
+    { name = "isort", marker = "sys_platform != 'emscripten'" },
+    { name = "jinja2" },
+    { name = "pydantic" },
+    { name = "pyyaml" },
+]
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/98/0e/5912b493a114591ebf66530fecda0f4a5e0e746ab7ea30f6da15de460e21/datamodel_code_generator-0.65.1.tar.gz", hash = "sha256:65471eaa32753d738f0e7ff8e0db3ac1fbc97ff64e393cd8df427eed77e86661" }
+wheels = [
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/c7/30/c911d29d3ce3e1d3e3a4fa7dbf39b9bdef8135094dba320edb4e2b568fb5/datamodel_code_generator-0.65.1-py3-none-any.whl", hash = "sha256:ca1dd498c54679841cd0541a09edd5f2ee2021a455f225c61a38a166c0db5d22" },
+]
+
+[package.optional-dependencies]
+http = [
+    { name = "httpx" },
+]
+
+[[package]]
 name = "delivery"
 version = "1.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "aiokafka" },
     { name = "alembic" },
+    { name = "apscheduler" },
     { name = "asyncpg" },
     { name = "fastapi" },
     { name = "grpcio" },
     { name = "grpcio-tools" },
     { name = "protobuf" },
+    { name = "pydantic" },
     { name = "pydantic-settings" },
     { name = "sqlalchemy", extra = ["asyncio"] },
     { name = "that-depends" },
@@ -294,6 +374,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "fastapi-code-generator" },
     { name = "httpx" },
     { name = "mypy" },
     { name = "pytest" },
@@ -306,11 +387,13 @@ dev = [
 requires-dist = [
     { name = "aiokafka", specifier = ">=0.12.0" },
     { name = "alembic", specifier = ">=1.14.0" },
+    { name = "apscheduler", specifier = ">=3.11.2" },
     { name = "asyncpg", specifier = ">=0.30.0" },
     { name = "fastapi", specifier = ">=0.115.0" },
     { name = "grpcio", specifier = ">=1.68.0" },
     { name = "grpcio-tools", specifier = ">=1.68.0" },
     { name = "protobuf", specifier = ">=5.29.0" },
+    { name = "pydantic", specifier = ">=2.0.0" },
     { name = "pydantic-settings", specifier = ">=2.7.0" },
     { name = "sqlalchemy", extras = ["asyncio"], specifier = ">=2.0.0" },
     { name = "that-depends", specifier = ">=2.0.0" },
@@ -319,6 +402,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "fastapi-code-generator", specifier = ">=0.8.0" },
     { name = "httpx", specifier = ">=0.28.0" },
     { name = "mypy", specifier = ">=1.14.0" },
     { name = "pytest", specifier = ">=8.3.0" },
@@ -355,6 +439,32 @@ dependencies = [
 sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/81/2d/ff8d91d7b564d464629a0fd50a4489c97fcb836ac230bf3a7269232a9b1f/fastapi-0.136.3.tar.gz", hash = "sha256:e487fae93ad408e6f47641ee4dfe389864fd7bec92e547ea8498fc13f43e83ab" }
 wheels = [
     { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/e0/82/45359b62a067409bd929ae8a56b8ed13e5a8c8a61194b3c236920999ab83/fastapi-0.136.3-py3-none-any.whl", hash = "sha256:3d2a69bdf04b7e9f3afa292c3bc7a98816bbfafa10bc9b45f3f3700d2f761620" },
+]
+
+[[package]]
+name = "fastapi-code-generator"
+version = "0.8.0"
+source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
+dependencies = [
+    { name = "click" },
+    { name = "datamodel-code-generator", extra = ["http"] },
+    { name = "jinja2" },
+    { name = "pydantic" },
+    { name = "pysnooper" },
+    { name = "typer" },
+]
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/f1/5c/325bf4cd4dcb834ed9d50081f2447c99a096d49deccfab276d8c40b01c6d/fastapi_code_generator-0.8.0.tar.gz", hash = "sha256:ed6ed9ee5cd71c67cf344c826ed542fca6300729d001a895045e75c7c14c4da6" }
+wheels = [
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/13/e4/775bc5526d46b11e2fb5f0ddcee7d5ad15025758d91c81f73e1b7428637e/fastapi_code_generator-0.8.0-py3-none-any.whl", hash = "sha256:77d3d3412371ffe8f957c2149f9281893f19680a23ae34cf0c3447fca5c946b2" },
+]
+
+[[package]]
+name = "genson"
+version = "1.3.0"
+source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/c5/cf/2303c8ad276dcf5ee2ad6cf69c4338fd86ef0f471a5207b069adf7a393cf/genson-1.3.0.tar.gz", hash = "sha256:e02db9ac2e3fd29e65b5286f7135762e2cd8a986537c075b06fc5f1517308e37" }
+wheels = [
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/f8/5c/e226de133afd8bb267ec27eead9ae3d784b95b39a287ed404caab39a5f50/genson-1.3.0-py3-none-any.whl", hash = "sha256:468feccd00274cc7e4c09e84b08704270ba8d95232aa280f65b986139cec67f7" },
 ]
 
 [[package]]
@@ -591,12 +701,46 @@ wheels = [
 ]
 
 [[package]]
+name = "inflect"
+version = "7.5.0"
+source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
+dependencies = [
+    { name = "more-itertools" },
+    { name = "typeguard" },
+]
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/78/c6/943357d44a21fd995723d07ccaddd78023eace03c1846049a2645d4324a3/inflect-7.5.0.tar.gz", hash = "sha256:faf19801c3742ed5a05a8ce388e0d8fe1a07f8d095c82201eb904f5d27ad571f" }
+wheels = [
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/8a/eb/427ed2b20a38a4ee29f24dbe4ae2dafab198674fe9a85e3d6adf9e5f5f41/inflect-7.5.0-py3-none-any.whl", hash = "sha256:2aea70e5e70c35d8350b8097396ec155ffd68def678c7ff97f51aa69c1d92344" },
+]
+
+[[package]]
 name = "iniconfig"
 version = "2.3.0"
 source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
 sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/72/34/14ca021ce8e5dfedc35312d08ba8bf51fdd999c576889fc2c24cb97f4f10/iniconfig-2.3.0.tar.gz", hash = "sha256:c76315c77db068650d49c5b56314774a7804df16fee4402c1f19d6d15d8c4730" }
 wheels = [
     { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/cb/b1/3846dd7f199d53cb17f49cba7e651e9ce294d8497c8c150530ed11865bb8/iniconfig-2.3.0-py3-none-any.whl", hash = "sha256:f631c04d2c48c52b84d0d0549c99ff3859c98df65b3101406327ecc7d53fbf12" },
+]
+
+[[package]]
+name = "isort"
+version = "8.0.1"
+source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/ef/7c/ec4ab396d31b3b395e2e999c8f46dec78c5e29209fac49d1f4dace04041d/isort-8.0.1.tar.gz", hash = "sha256:171ac4ff559cdc060bcfff550bc8404a486fee0caab245679c2abe7cb253c78d" }
+wheels = [
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/3e/95/c7c34aa53c16353c56d0b802fba48d5f5caa2cdee7958acbcb795c830416/isort-8.0.1-py3-none-any.whl", hash = "sha256:28b89bc70f751b559aeca209e6120393d43fbe2490de0559662be7a9787e3d75" },
+]
+
+[[package]]
+name = "jinja2"
+version = "3.1.6"
+source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
+dependencies = [
+    { name = "markupsafe" },
+]
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/df/bf/f7da0350254c0ed7c72f3e33cef02e048281fec7ecec5f032d4aac52226b/jinja2-3.1.6.tar.gz", hash = "sha256:0137fb05990d35f1275a587e9aee6d56da821fc83491a0fb838183be43f66d6d" }
+wheels = [
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/62/a1/3d680cbfd5f4b8f15abc1d571870c5fc3e594bb582bc3b64ea099db13e56/jinja2-3.1.6-py3-none-any.whl", hash = "sha256:85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67" },
 ]
 
 [[package]]
@@ -672,6 +816,18 @@ wheels = [
 ]
 
 [[package]]
+name = "markdown-it-py"
+version = "4.2.0"
+source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
+dependencies = [
+    { name = "mdurl" },
+]
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/06/ff/7841249c247aa650a76b9ee4bbaeae59370dc8bfd2f6c01f3630c35eb134/markdown_it_py-4.2.0.tar.gz", hash = "sha256:04a21681d6fbb623de53f6f364d352309d4094dd4194040a10fd51833e418d49" }
+wheels = [
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/b3/81/4da04ced5a082363ecfa159c010d200ecbd959ae410c10c0264a38cac0f5/markdown_it_py-4.2.0-py3-none-any.whl", hash = "sha256:9f7ebbcd14fe59494226453aed97c1070d83f8d24b6fc3a3bcf9a38092641c4a" },
+]
+
+[[package]]
 name = "markupsafe"
 version = "3.0.3"
 source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
@@ -732,6 +888,24 @@ wheels = [
     { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/fb/df/5bd7a48c256faecd1d36edc13133e51397e41b73bb77e1a69deab746ebac/markupsafe-3.0.3-cp314-cp314t-win32.whl", hash = "sha256:915c04ba3851909ce68ccc2b8e2cd691618c4dc4c4232fb7982bca3f41fd8c3d" },
     { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/1a/8a/0402ba61a2f16038b48b39bccca271134be00c5c9f0f623208399333c448/markupsafe-3.0.3-cp314-cp314t-win_amd64.whl", hash = "sha256:4faffd047e07c38848ce017e8725090413cd80cbc23d86e55c587bf979e579c9" },
     { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/70/bc/6f1c2f612465f5fa89b95bead1f44dcb607670fd42891d8fdcd5d039f4f4/markupsafe-3.0.3-cp314-cp314t-win_arm64.whl", hash = "sha256:32001d6a8fc98c8cb5c947787c5d08b0a50663d139f1305bac5885d98d9b40fa" },
+]
+
+[[package]]
+name = "mdurl"
+version = "0.1.2"
+source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/d6/54/cfe61301667036ec958cb99bd3efefba235e65cdeb9c84d24a8293ba1d90/mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba" }
+wheels = [
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/b3/38/89ba8ad64ae25be8de66a6d463314cf1eb366222074cfda9ee839c56a4b4/mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8" },
+]
+
+[[package]]
+name = "more-itertools"
+version = "11.1.0"
+source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/de/1d/f4da6f02cdffe04d6362210b807146a26044c88d839208aec273bb0d9184/more_itertools-11.1.0.tar.gz", hash = "sha256:48e8f4d9e7e5878571ecf6f2b4e57634f93cd474cc8cfbd2376f2d11b396e30d" }
+wheels = [
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/e8/3d/1087453384dbde46a8c7f9356eead2c58be8a7bf156bca40243377c85715/more_itertools-11.1.0-py3-none-any.whl", hash = "sha256:4b65538ae22f6fed0ce4874efd317463a7489796a0939fa66824dd542125a192" },
 ]
 
 [[package]]
@@ -803,6 +977,15 @@ source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/re
 sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/5a/82/42f767fc1c1143d6fd36efb827202a2d997a375e160a71eb2888a925aac1/pathspec-1.1.1.tar.gz", hash = "sha256:17db5ecd524104a120e173814c90367a96a98d07c45b2e10c2f3919fff91bf5a" }
 wheels = [
     { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/f1/d9/7fb5aa316bc299258e68c73ba3bddbc499654a07f151cba08f6153988714/pathspec-1.1.1-py3-none-any.whl", hash = "sha256:a00ce642f577bf7f473932318056212bc4f8bfdf53128c78bbd5af0b9b20b189" },
+]
+
+[[package]]
+name = "platformdirs"
+version = "4.10.0"
+source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/d7/47/e4501f49c178ae1d9f4a75073fda4204f52647993f075a9db4d14930e0c5/platformdirs-4.10.0.tar.gz", hash = "sha256:31e761a6a0ca04faf7353ea759bdba55652be214725111e5aac52dfa29d4bef7" }
+wheels = [
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/81/e6/cd9575ac904136b3cbf7aa7ee819ef86eedb7274e46f230e94ea4342e729/platformdirs-4.10.0-py3-none-any.whl", hash = "sha256:fb516cdb12eb0d857d0cd85a7c57cea4d060bee4578d6cf5a14dfdf8cbf8784a" },
 ]
 
 [[package]]
@@ -943,6 +1126,15 @@ wheels = [
 ]
 
 [[package]]
+name = "pysnooper"
+version = "1.2.3"
+source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/d2/4a/be3c144f58de6b78911c417cc4a3b3fe5eb6d13cae4c12daf3ca17a8d473/pysnooper-1.2.3.tar.gz", hash = "sha256:1fa1425444a7af45108aaed860b5ca8b62b25bba25b0b037c059ba353d8f1e74" }
+wheels = [
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/69/87/df62c8a998216e6749b67d548dae0967906036c61457510ef49667927c49/PySnooper-1.2.3-py2.py3-none-any.whl", hash = "sha256:546372f0e72da89f8d1b89e758b7c05a478d65288569a1ca2cc1620e7b1b1944" },
+]
+
+[[package]]
 name = "pytest"
 version = "9.0.3"
 source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
@@ -978,6 +1170,35 @@ source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/re
 sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/82/ed/0301aeeac3e5353ef3d94b6ec08bbcabd04a72018415dcb29e588514bba8/python_dotenv-1.2.2.tar.gz", hash = "sha256:2c371a91fbd7ba082c2c1dc1f8bf89ca22564a087c2c287cd9b662adde799cf3" }
 wheels = [
     { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/0b/d7/1959b9648791274998a9c3526f6d0ec8fd2233e4d4acce81bbae76b44b2a/python_dotenv-1.2.2-py3-none-any.whl", hash = "sha256:1d8214789a24de455a8b8bd8ae6fe3c6b69a5e3d64aa8a8e5d68e694bbcb285a" },
+]
+
+[[package]]
+name = "pytokens"
+version = "0.4.1"
+source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/b6/34/b4e015b99031667a7b960f888889c5bd34ef585c85e1cb56a594b92836ac/pytokens-0.4.1.tar.gz", hash = "sha256:292052fe80923aae2260c073f822ceba21f3872ced9a68bb7953b348e561179a" }
+wheels = [
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/41/5d/e44573011401fb82e9d51e97f1290ceb377800fb4eed650b96f4753b499c/pytokens-0.4.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:140709331e846b728475786df8aeb27d24f48cbcf7bcd449f8de75cae7a45083" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/f0/e6/5bbc3019f8e6f21d09c41f8b8654536117e5e211a85d89212d59cbdab381/pytokens-0.4.1-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:6d6c4268598f762bc8e91f5dbf2ab2f61f7b95bdc07953b602db879b3c8c18e1" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/bf/3c/2d5297d82286f6f3d92770289fd439956b201c0a4fc7e72efb9b2293758e/pytokens-0.4.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:24afde1f53d95348b5a0eb19488661147285ca4dd7ed752bbc3e1c6242a304d1" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/20/01/7436e9ad693cebda0551203e0bf28f7669976c60ad07d6402098208476de/pytokens-0.4.1-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:5ad948d085ed6c16413eb5fec6b3e02fa00dc29a2534f088d3302c47eb59adf9" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/2e/df/533c82a3c752ba13ae7ef238b7f8cdd272cf1475f03c63ac6cf3fcfb00b6/pytokens-0.4.1-cp312-cp312-win_amd64.whl", hash = "sha256:3f901fe783e06e48e8cbdc82d631fca8f118333798193e026a50ce1b3757ea68" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/cb/dc/08b1a080372afda3cceb4f3c0a7ba2bde9d6a5241f1edb02a22a019ee147/pytokens-0.4.1-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:8bdb9d0ce90cbf99c525e75a2fa415144fd570a1ba987380190e8b786bc6ef9b" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/64/0c/41ea22205da480837a700e395507e6a24425151dfb7ead73343d6e2d7ffe/pytokens-0.4.1-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:5502408cab1cb18e128570f8d598981c68a50d0cbd7c61312a90507cd3a1276f" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/e0/d2/afe5c7f8607018beb99971489dbb846508f1b8f351fcefc225fcf4b2adc0/pytokens-0.4.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:29d1d8fb1030af4d231789959f21821ab6325e463f0503a61d204343c9b355d1" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/68/d4/00ffdbd370410c04e9591da9220a68dc1693ef7499173eb3e30d06e05ed1/pytokens-0.4.1-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:970b08dd6b86058b6dc07efe9e98414f5102974716232d10f32ff39701e841c4" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/a7/c9/c3161313b4ca0c601eeefabd3d3b576edaa9afdefd32da97210700e47652/pytokens-0.4.1-cp313-cp313-win_amd64.whl", hash = "sha256:9bd7d7f544d362576be74f9d5901a22f317efc20046efe2034dced238cbbfe78" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/8f/a7/b470f672e6fc5fee0a01d9e75005a0e617e162381974213a945fcd274843/pytokens-0.4.1-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:4a14d5f5fc78ce85e426aa159489e2d5961acf0e47575e08f35584009178e321" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/80/98/e83a36fe8d170c911f864bfded690d2542bfcfacb9c649d11a9e6eb9dc41/pytokens-0.4.1-cp314-cp314-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:97f50fd18543be72da51dd505e2ed20d2228c74e0464e4262e4899797803d7fa" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/0f/95/70d7041273890f9f97a24234c00b746e8da86df462620194cef1d411ddeb/pytokens-0.4.1-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:dc74c035f9bfca0255c1af77ddd2d6ae8419012805453e4b0e7513e17904545d" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/da/79/76e6d09ae19c99404656d7db9c35dfd20f2086f3eb6ecb496b5b31163bad/pytokens-0.4.1-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:f66a6bbe741bd431f6d741e617e0f39ec7257ca1f89089593479347cc4d13324" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/79/37/482e55fa1602e0a7ff012661d8c946bafdc05e480ea5a32f4f7e336d4aa9/pytokens-0.4.1-cp314-cp314-win_amd64.whl", hash = "sha256:b35d7e5ad269804f6697727702da3c517bb8a5228afa450ab0fa787732055fc9" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/30/e8/20e7db907c23f3d63b0be3b8a4fd1927f6da2395f5bcc7f72242bb963dfe/pytokens-0.4.1-cp314-cp314t-macosx_11_0_arm64.whl", hash = "sha256:8fcb9ba3709ff77e77f1c7022ff11d13553f3c30299a9fe246a166903e9091eb" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/d6/81/88a95ee9fafdd8f5f3452107748fd04c24930d500b9aba9738f3ade642cc/pytokens-0.4.1-cp314-cp314t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:79fc6b8699564e1f9b521582c35435f1bd32dd06822322ec44afdeba666d8cb3" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/cf/35/3aa899645e29b6375b4aed9f8d21df219e7c958c4c186b465e42ee0a06bf/pytokens-0.4.1-cp314-cp314t-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:d31b97b3de0f61571a124a00ffe9a81fb9939146c122c11060725bd5aea79975" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/52/a0/07907b6ff512674d9b201859f7d212298c44933633c946703a20c25e9d81/pytokens-0.4.1-cp314-cp314t-musllinux_1_2_x86_64.whl", hash = "sha256:967cf6e3fd4adf7de8fc73cd3043754ae79c36475c1c11d514fc72cf5490094a" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/39/2a/cbbf9250020a4a8dd53ba83a46c097b69e5eb49dd14e708f496f548c6612/pytokens-0.4.1-cp314-cp314t-win_amd64.whl", hash = "sha256:584c80c24b078eec1e227079d56dc22ff755e0ba8654d8383b2c549107528918" },
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/c6/78/397db326746f0a342855b81216ae1f0a32965deccfd7c830a2dbc66d2483/pytokens-0.4.1-py3-none-any.whl", hash = "sha256:26cef14744a8385f35d0e095dc8b3a7583f6c953c2e3d269c7f82484bf5ad2de" },
 ]
 
 [[package]]
@@ -1061,6 +1282,19 @@ wheels = [
 ]
 
 [[package]]
+name = "rich"
+version = "15.0.0"
+source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
+dependencies = [
+    { name = "markdown-it-py" },
+    { name = "pygments" },
+]
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/c0/8f/0722ca900cc807c13a6a0c696dacf35430f72e0ec571c4275d2371fca3e9/rich-15.0.0.tar.gz", hash = "sha256:edd07a4824c6b40189fb7ac9bc4c52536e9780fbbfbddf6f1e2502c31b068c36" }
+wheels = [
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/82/3b/64d4899d73f91ba49a8c18a8ff3f0ea8f1c1d75481760df8c68ef5235bf5/rich-15.0.0-py3-none-any.whl", hash = "sha256:33bd4ef74232fb73fe9279a257718407f169c09b78a87ad3d296f548e27de0bb" },
+]
+
+[[package]]
 name = "ruff"
 version = "0.15.16"
 source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
@@ -1092,6 +1326,15 @@ source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/re
 sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/4f/db/cfac1baf10650ab4d1c111714410d2fbb77ac5a616db26775db562c8fab2/setuptools-82.0.1.tar.gz", hash = "sha256:7d872682c5d01cfde07da7bccc7b65469d3dca203318515ada1de5eda35efbf9" }
 wheels = [
     { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/9d/76/f789f7a86709c6b087c5a2f52f911838cad707cc613162401badc665acfe/setuptools-82.0.1-py3-none-any.whl", hash = "sha256:a59e362652f08dcd477c78bb6e7bd9d80a7995bc73ce773050228a348ce2e5bb" },
+]
+
+[[package]]
+name = "shellingham"
+version = "1.5.4"
+source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/58/15/8b3609fd3830ef7b27b655beb4b4e9c62313a4e8da8c676e142cc210d58e/shellingham-1.5.4.tar.gz", hash = "sha256:8dbca0739d487e5bd35ab3ca4b36e11c4078f3a234bfce294b0a0291363404de" }
+wheels = [
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/e0/f9/0595336914c5619e5f28a1fb793285925a8cd4b432c9da0a987836c7f822/shellingham-1.5.4-py2.py3-none-any.whl", hash = "sha256:7ecfff8f2fd72616f7481040475a65b2bf8af90a56c89140852d1120324e8686" },
 ]
 
 [[package]]
@@ -1179,6 +1422,33 @@ wheels = [
 ]
 
 [[package]]
+name = "typeguard"
+version = "4.5.2"
+source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
+dependencies = [
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/67/1c/dfba5c4633cafc4c701f237d2ba63b416805047fd6d96aab4cfc40969f98/typeguard-4.5.2.tar.gz", hash = "sha256:5a16dcac23502039299c97c8941651bc33d7ea8cc4b2f7d6bbb1b528f6eea423" }
+wheels = [
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/5b/29/74eeb4d3f3ae61ca096b018ad486b3b3c74b17bec09ab4edab721cbefec3/typeguard-4.5.2-py3-none-any.whl", hash = "sha256:fcf9de18bd945cdb4c7b996e12b4c51ce83f92f191314a6d7cf1739586ec98cf" },
+]
+
+[[package]]
+name = "typer"
+version = "0.26.8"
+source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
+dependencies = [
+    { name = "annotated-doc" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "rich" },
+    { name = "shellingham" },
+]
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/7c/f7/68adc395201b20b872d68e975386832e8005ffeacedd43a1d837a32815be/typer-0.26.8.tar.gz", hash = "sha256:c244a6bd558886fe3f8780efb6bdd28bb9aff005a94eedebaa5cb32926fe2f7e" }
+wheels = [
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/80/87/b9fd69c92c6102a066e1b86a35243f53e70bd4c709f2a26d9f4fee4f4dc0/typer-0.26.8-py3-none-any.whl", hash = "sha256:3512ca79ac5c11113414b36e80281b872884477722440691c89d1112e321a49c" },
+]
+
+[[package]]
 name = "typing-extensions"
 version = "4.15.0"
 source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
@@ -1197,6 +1467,27 @@ dependencies = [
 sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/55/e3/70399cb7dd41c10ac53367ae42139cf4b1ca5f36bb3dc6c9d33acdb43655/typing_inspection-0.4.2.tar.gz", hash = "sha256:ba561c48a67c5958007083d386c3295464928b01faa735ab8547c5692e87f464" }
 wheels = [
     { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/dc/9b/47798a6c91d8bdb567fe2698fe81e0c6b7cb7ef4d13da4114b41d239f65d/typing_inspection-0.4.2-py3-none-any.whl", hash = "sha256:4ed1cacbdc298c220f1bd249ed5287caa16f34d44ef4e9c3d0cbad5b521545e7" },
+]
+
+[[package]]
+name = "tzdata"
+version = "2026.2"
+source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/ba/19/1b9b0e29f30c6d35cb345486df41110984ea67ae69dddbc0e8a100999493/tzdata-2026.2.tar.gz", hash = "sha256:9173fde7d80d9018e02a662e168e5a2d04f87c41ea174b139fbef642eda62d10" }
+wheels = [
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/ce/e4/dccd7f47c4b64213ac01ef921a1337ee6e30e8c6466046018326977efd95/tzdata-2026.2-py2.py3-none-any.whl", hash = "sha256:bbe9af844f658da81a5f95019480da3a89415801f6cc966806612cc7169bffe7" },
+]
+
+[[package]]
+name = "tzlocal"
+version = "5.4.3"
+source = { registry = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/simple" }
+dependencies = [
+    { name = "tzdata", marker = "sys_platform == 'win32'" },
+]
+sdist = { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/48/55/15e2340963d2bfedcc6042da3911438fd336f8ae96b65bdbe3a29766da0c/tzlocal-5.4.3.tar.gz", hash = "sha256:3a8c9bc18cf47e1dcde252ea0e6a72a6cde320a400b6ac6db1f1f8cccd553c00" }
+wheels = [
+    { url = "https://artifactory.raiffeisen.ru/artifactory/api/pypi/remote-pypi/packages/packages/42/28/fc144409c71569e928585f8f3c629d80d1ca3ef40175e9222f01588f98c9/tzlocal-5.4.3-py3-none-any.whl", hash = "sha256:24ce97bb58e2a973f7640ec2553ab4e6f6d5a0d0d1aa9dc43bca21d89e1feb82" },
 ]
 
 [[package]]

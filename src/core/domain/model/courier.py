@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from uuid import UUID, uuid4
 
 from src.core.domain.model.assignment import Assignment, AssignmentStatusEnum
@@ -26,7 +26,7 @@ class CourierAggregate:
         max_volume: Volume | None = None,
         assignments: list[Assignment] | None = None
     ):
-        
+
         self._id = id or uuid4()
         self._name = name
         self._location = location
@@ -57,10 +57,10 @@ class CourierAggregate:
         if not isinstance(other, CourierAggregate):
             raise NotImplementedError("Cannot compare CourierAggregate with other types")
         return self._id == other._id
-    
+
 
     def can_take_order(self, new_order: OrderAggregate) -> bool:
-        if new_order.status != OrderStatusEnum.created:
+        if new_order.status != OrderStatusEnum.CREATED:
             return False
 
         for assignment in self._assignments:
@@ -81,13 +81,16 @@ class CourierAggregate:
             return Result.failure(AssignmentCapacityExceededError(message="cant take assignment - too big"))
 
         new_assignment = Assignment(
-            _id=uuid4(),
-            _order_id=new_order.id,
-            _volume=new_order.volume,
-            _location=new_order.location
+            id=uuid4(),
+            order_id=new_order.id,
+            volume=new_order.volume,
+            location=new_order.location
         )
         self._assignments.append(new_assignment)
         return Result.success(None)
+
+    def get_assignment_by_order_id(self, order_id: UUID) -> Assignment | None:
+        return next((a for a in self._assignments if a.order_id == order_id), None)
 
     def complete_assignment(self, assignment_id: UUID) -> Result[None, DomainError]:
         assignment = next((a for a in self._assignments if a.id == assignment_id), None)
