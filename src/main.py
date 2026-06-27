@@ -26,7 +26,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     scheduler.add_job(
         assign_order_job,
         "interval",
-        seconds=10,
+        seconds=1,
     )
     scheduler.start()
     print("APScheduler started successfully.")

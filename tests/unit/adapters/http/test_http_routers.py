@@ -10,7 +10,7 @@ from httpx import ASGITransport, AsyncClient
 from src.core.application.queries.get_all_couriers import CourierResponseDTO
 from src.core.application.queries.get_not_completed_orders import NotCompletedOrderResponseDTO
 from src.core.domain.model.location import Location
-from src.libs.errs.exceptions import DomainInvariantException, NotFoundException
+from src.libs.errs.exceptions import DomainInvariantException, NotFoundException, OrderAlreadyExistsError
 from src.main import app
 
 
@@ -68,6 +68,37 @@ async def test_create_order_default_volume(client: AsyncClient) -> None:
         response = await client.post("/api/v1/orders", json=payload)
 
         assert response.status_code == 201
+
+
+@pytest.mark.asyncio
+async def test_create_order_duplicate_id_409(client: AsyncClient) -> None:
+    order_id = uuid4()
+    payload = {
+        "id": str(order_id),
+        "address": {
+            "country": "Russia",
+            "city": "Moscow",
+            "street": "Tverskaya",
+            "house": "1",
+            "apartment": "1",
+        },
+        "volume": 5,
+    }
+
+    with patch(
+        "src.adapters.in_.http.routers.create_order.create_order_use_case",
+        new_callable=AsyncMock,
+    ) as mock_handler:
+        mock_handler.side_effect = DomainInvariantException(
+            OrderAlreadyExistsError(message=f"Order with id={order_id} already exists")
+        )
+
+        response = await client.post("/api/v1/orders", json=payload)
+
+        assert response.status_code == 409
+        data = response.json()
+        assert data["code"] == "order_already_exists"
+        assert str(order_id) in data["message"]
 
 
 @pytest.mark.asyncio

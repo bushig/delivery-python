@@ -53,3 +53,8 @@ class AssignmentCapacityExceededError(DomainError):
 class AssignmentNotPossibleError(DomainError):
     def __init__(self, message: str) -> None:
         super().__init__(code="assignment_not_possible", message=message)
+
+
+class OrderAlreadyExistsError(DomainError):
+    def __init__(self, message: str) -> None:
+        super().__init__(code="order_already_exists", message=message)

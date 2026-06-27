@@ -19,6 +19,6 @@ async def assign_order_job(
     try:
         cmd = AssignOrderCommand()
         await assign_order(cmd, uow, dispatch_service)
-        logger.debug("Assign order job completed")
+        print("Assign order job completed")
     except Exception as e:
-        logger.exception("Error in assign order job: %s", e)
+        print("Error in assign order job: %s", e)

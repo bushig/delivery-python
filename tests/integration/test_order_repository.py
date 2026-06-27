@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.adapters.out.postgres.order_repository import OrderRepositoryPostgres
 from src.core.domain.model.order import OrderStatusEnum
-from src.libs.errs.exceptions import NotFoundException
+from src.libs.errs.exceptions import DomainInvariantException, NotFoundException, OrderAlreadyExistsError
 from tests.factories import OrderAggregateFactory
 
 
@@ -123,3 +123,22 @@ async def test_get_all_not_completed_empty(order_repo: OrderRepositoryPostgres, 
     result = await order_repo.get_all_not_completed()
 
     assert len(result) == 0
+
+
+async def test_add_duplicate_id_raises_order_already_exists(
+    order_repo: OrderRepositoryPostgres,
+    db_session: AsyncSession,
+) -> None:
+    order = OrderAggregateFactory.build()
+
+    await order_repo.add(order)
+    await db_session.commit()
+
+    duplicate_order = OrderAggregateFactory.build(id=order.id)
+
+    with pytest.raises(DomainInvariantException) as exc_info:
+        await order_repo.add(duplicate_order)
+
+    assert isinstance(exc_info.value.error, OrderAlreadyExistsError)
+    assert exc_info.value.error.code == "order_already_exists"
+    assert str(order.id) in exc_info.value.error.message

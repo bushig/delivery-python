@@ -3,12 +3,13 @@ from __future__ import annotations
 from uuid import UUID
 
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.adapters.out.postgres.models import OrderModel
 from src.core.domain.model.order import OrderAggregate, OrderStatusEnum
 from src.libs.errs.error import DomainError
-from src.libs.errs.exceptions import NotFoundException
+from src.libs.errs.exceptions import DomainInvariantException, NotFoundException, OrderAlreadyExistsError
 
 
 class OrderRepositoryPostgres:
@@ -18,6 +19,11 @@ class OrderRepositoryPostgres:
     async def add(self, order: OrderAggregate) -> None:
         model = OrderModel._from_domain(order)
         self._session.add(model)
+        try:
+            await self._session.flush()
+        except IntegrityError as e:
+            error = OrderAlreadyExistsError(message=f"Order with id={order.id} already exists")
+            raise DomainInvariantException(error) from e
 
     async def update(self, order: OrderAggregate) -> None:
         stmt = select(OrderModel).where(OrderModel.id == order.id)
