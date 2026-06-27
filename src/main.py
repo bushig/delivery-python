@@ -1,13 +1,16 @@
 from __future__ import annotations
 
 import logging
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 from src.adapters.in_.http.main import http_router
+from src.core.application.jobs.assign_order_job import assign_order_job
 from src.di.container import Container
 from src.libs.errs.exceptions import DomainInvariantException, NotFoundException
 
@@ -15,10 +18,21 @@ logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     logger.info("Delivery service started")
 
+    scheduler = AsyncIOScheduler()
+
+    scheduler.add_job(
+        assign_order_job,
+        "interval",
+        seconds=10,
+    )
+    scheduler.start()
+    print("APScheduler started successfully.")
     yield
+    scheduler.shutdown()
+    print("APScheduler shut down successfully.")
 
     await Container.tear_down()
 
