@@ -26,9 +26,11 @@ DELETE FROM public.orders;
 DELETE FROM public.outbox;
 ```
 
-# Генерация HTTP-роутеров и моделей из OpenAPI
+# Генерация моделей из OpenAPI
 
-HTTP-роутеры и Pydantic-модели генерируются автоматически из `openapi_contract.yaml` с помощью `fastapi-code-generator`.
+Pydantic-модели генерируются автоматически из `openapi_contract.yaml` с помощью `fastapi-code-generator`.
+
+Сами роутеры не генеририруются на этом этапе так как в fastapi из коробки нет поддержки class based views и для этого нужно искать другие библиотеки (чтобы отдельной был интерфейс и отдельно сам класс).
 
 ## Быстрая генерация
 
@@ -39,8 +41,6 @@ HTTP-роутеры и Pydantic-модели генерируются автом
 ## Что генерируется
 
 - `src/adapters/in_/http/models.py` — Pydantic-модели для запросов/ответов
-- `src/adapters/in_/http/routers/*.py` — роутеры по тегам OpenAPI (CreateOrder, CompleteOrder, и т.д.)
-- `src/adapters/in_/http/main.py` — агрегатор всех роутеров
 
 ## Когда перегенерировать
 
