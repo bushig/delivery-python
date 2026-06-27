@@ -89,6 +89,9 @@ class CourierAggregate:
         self._assignments.append(new_assignment)
         return Result.success(None)
 
+    def get_assignment_by_order_id(self, order_id: UUID) -> Assignment | None:
+        return next((a for a in self._assignments if a.order_id == order_id), None)
+
     def complete_assignment(self, assignment_id: UUID) -> Result[None, DomainError]:
         assignment = next((a for a in self._assignments if a.id == assignment_id), None)
         if assignment is None:
