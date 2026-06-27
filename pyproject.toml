@@ -26,6 +26,7 @@ dev = [
     "testcontainers[postgresql]>=4.9.0",
     "ruff>=0.8.0",
     "mypy>=1.14.0",
+    "fastapi-code-generator>=0.8.0",
 ]
 
 [build-system]

@@ -26,10 +26,28 @@ DELETE FROM public.orders;
 DELETE FROM public.outbox;
 ```
 
-# Генерация HTTP сервера
+# Генерация HTTP-роутеров и моделей из OpenAPI
+
+HTTP-роутеры и Pydantic-модели генерируются автоматически из `openapi_contract.yaml` с помощью `fastapi-code-generator`.
+
+## Быстрая генерация
+
+```bash
+./scripts/generate_http.sh
 ```
-mvn clean compile
-```
+
+## Что генерируется
+
+- `src/adapters/in_/http/models.py` — Pydantic-модели для запросов/ответов
+- `src/adapters/in_/http/routers/*.py` — роутеры по тегам OpenAPI (CreateOrder, CompleteOrder, и т.д.)
+- `src/adapters/in_/http/main.py` — агрегатор всех роутеров
+
+## Когда перегенерировать
+
+Запускайте генерацию после каждого изменения `openapi_contract.yaml`:
+- Добавили новый endpoint
+- Изменили схему запроса/ответа
+- Добавили новый тег операции
 
 # Генерация gRPC клиента из Protobuf
 ```

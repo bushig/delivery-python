@@ -1,0 +1,15 @@
+from __future__ import annotations
+
+from fastapi import APIRouter
+
+{{imports}}
+
+{% for router in routers %}
+from .routers import {{router}}
+{% endfor %}
+
+router = APIRouter()
+
+{% for router in routers -%}
+router.include_router({{router}}.router)
+{% endfor -%}

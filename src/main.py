@@ -7,6 +7,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
 from libs.errs.exceptions import DomainInvariantException, NotFoundException
+from src.adapters.in_.http.main import router as http_router
 from src.di.container import container
 
 logger = logging.getLogger(__name__)
@@ -50,3 +51,6 @@ async def domain_error_handler(request: Request, exc: DomainInvariantException) 
 async def global_error_handler(request: Request, exc: Exception) -> JSONResponse:
     logger.exception("Unhandled exception")
     return JSONResponse(status_code=500, content=None)
+
+
+app.include_router(http_router)
