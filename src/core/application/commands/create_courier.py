@@ -13,7 +13,7 @@ class CreateCourierCommand:
     name: str
 
 
-async def create_courier(cmd: CreateCourierCommand, uow: UnitOfWork) -> None:
+async def create_courier(cmd: CreateCourierCommand, uow: UnitOfWork) -> CourierAggregate:
     async with uow:
         courier = CourierAggregate(
             name=cmd.name,
@@ -21,3 +21,4 @@ async def create_courier(cmd: CreateCourierCommand, uow: UnitOfWork) -> None:
         )
         await uow.couriers.add(courier)
         await uow.commit()
+        return courier

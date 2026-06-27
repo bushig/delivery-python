@@ -14,7 +14,7 @@ from src.core.domain.model.location import Location
 from src.core.domain.ports import UnitOfWork
 from src.di.container import container
 
-from .models import (
+from ..models import (
     Error,
     Location as LocationModel,
 )
@@ -25,7 +25,7 @@ router = APIRouter(tags=['MoveCourier'])
 @router.post(
     '/api/v1/couriers/{courierId}/move',
     response_model=None,
-    status_code=204,
+    status_code=200,
     responses={
         '400': {'model': Error},
         '409': {'model': Error},

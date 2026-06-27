@@ -12,7 +12,7 @@ from src.core.application.queries.get_not_completed_orders import get_not_comple
 from src.core.domain.ports import UnitOfWork
 from src.di.container import container
 
-from .models import (
+from ..models import (
     Error,
     Location,
     Order,

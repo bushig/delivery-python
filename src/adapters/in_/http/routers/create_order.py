@@ -16,7 +16,7 @@ from src.core.domain.model.volume import Volume
 from src.core.domain.ports import UnitOfWork
 from src.di.container import container
 
-from .models import (
+from ..models import (
     CreateOrderResponse,
     Error,
     NewOrder,
@@ -48,7 +48,8 @@ async def create_order(body: NewOrder, uow: UnitOfWork = container.unit_of_work)
         house=body.address.house,
         apartment=body.address.apartment,
     )
-    volume = Volume(_value=Decimal(str(body.volume))) if body.volume is not None else Volume(_value=Decimal("1"))
+    volume_value = Decimal(str(body.volume)) if body.volume is not None else Decimal("1")
+    volume = Volume(_value=volume_value)
 
     cmd = CreateOrderCommand(
         order_id=body.id,

@@ -12,7 +12,7 @@ from src.core.application.queries.get_all_couriers import get_all_couriers as ge
 from src.core.domain.ports import UnitOfWork
 from src.di.container import container
 
-from .models import (
+from ..models import (
     Courier,
     Error,
     Location,

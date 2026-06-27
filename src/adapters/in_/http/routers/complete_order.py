@@ -13,7 +13,7 @@ from src.core.application.commands.complete_order import CompleteOrderCommand, c
 from src.core.domain.ports import UnitOfWork
 from src.di.container import container
 
-from .models import (
+from ..models import (
     Error,
 )
 
@@ -23,7 +23,7 @@ router = APIRouter(tags=['CompleteOrder'])
 @router.post(
     '/api/v1/couriers/{courierId}/orders/{orderId}/complete',
     response_model=None,
-    status_code=204,
+    status_code=200,
     responses={
         '400': {'model': Error},
         '409': {'model': Error},

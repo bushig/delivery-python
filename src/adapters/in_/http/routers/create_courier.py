@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from typing import Union
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from fastapi import APIRouter
 from that_depends import inject
@@ -13,7 +13,7 @@ from src.core.application.commands.create_courier import CreateCourierCommand, c
 from src.core.domain.ports import UnitOfWork
 from src.di.container import container
 
-from .models import (
+from ..models import (
     CreateCourierResponse,
     Error,
     NewCourier,
@@ -39,6 +39,6 @@ async def create_courier(body: NewCourier, uow: UnitOfWork = container.unit_of_w
     Добавить курьера
     """
     cmd = CreateCourierCommand(name=body.name)
-    await create_courier_use_case(cmd, uow)
+    courier = await create_courier_use_case(cmd, uow)
 
-    return CreateCourierResponse(courierId=body.id)
+    return CreateCourierResponse(courierId=courier.id)
