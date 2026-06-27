@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import asyncio
 from collections.abc import AsyncGenerator
 
 import pytest
@@ -12,21 +11,14 @@ from src.adapters.out.postgres.database import Base, Database
 
 
 @pytest.fixture(scope="session")
-def event_loop():
-    loop = asyncio.new_event_loop()
-    yield loop
-    loop.close()
-
-
-@pytest_asyncio.fixture(scope="session")
-async def postgres_container() -> AsyncGenerator[str, None]:
-    with PostgresContainer("postgres:16") as pg:
+def postgres_url() -> str:
+    with PostgresContainer("postgres:16", driver="asyncpg") as pg:
         yield pg.get_connection_url()
 
 
-@pytest_asyncio.fixture(scope="session")
-async def database(postgres_container: str) -> AsyncGenerator[Database, None]:
-    db = Database(url=postgres_container)
+@pytest_asyncio.fixture
+async def database(postgres_url: str) -> AsyncGenerator[Database, None]:
+    db = Database(url=postgres_url)
     engine = db._engine
 
     async with engine.begin() as conn:

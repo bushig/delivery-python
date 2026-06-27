@@ -8,14 +8,14 @@ from src.adapters.out.postgres.order_repository import OrderRepositoryPostgres
 from src.core.domain.ports import UnitOfWork as UnitOfWorkProtocol
 
 
-class UnitOfWorkImpl(UnitOfWorkProtocol):
+class UnitOfWorkPostgres(UnitOfWorkProtocol):
     def __init__(self, database: Database) -> None:
         self._database = database
         self._session: AsyncSession | None = None
         self.orders: OrderRepositoryPostgres
         self.couriers: CourierRepositoryPostgres
 
-    async def __aenter__(self) -> UnitOfWorkImpl:
+    async def __aenter__(self) -> UnitOfWorkPostgres:
         self._session = self._database.session_factory()
         self.orders = OrderRepositoryPostgres(self._session)
         self.couriers = CourierRepositoryPostgres(self._session)

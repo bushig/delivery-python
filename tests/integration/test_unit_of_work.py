@@ -4,7 +4,7 @@ from decimal import Decimal
 from uuid import uuid4
 
 from src.adapters.out.postgres.database import Database
-from src.adapters.out.postgres.unit_of_work import UnitOfWorkImpl
+from src.adapters.out.postgres.unit_of_work import UnitOfWorkPostgres
 from src.core.domain.model.courier import CourierAggregate
 from src.core.domain.model.location import Location
 from src.core.domain.model.order import OrderAggregate, OrderStatusEnum
@@ -32,12 +32,12 @@ async def test_commit_saves_both_aggregates(database: Database) -> None:
     order = _make_order()
     courier = _make_courier()
 
-    async with UnitOfWorkImpl(database) as uow:
+    async with UnitOfWorkPostgres(database) as uow:
         await uow.orders.add(order)
         await uow.couriers.add(courier)
         await uow.commit()
 
-    async with UnitOfWorkImpl(database) as uow:
+    async with UnitOfWorkPostgres(database) as uow:
         saved_order = await uow.orders.get_by_id(order.id)
         saved_courier = await uow.couriers.get_by_id(courier.id)
 
@@ -52,14 +52,14 @@ async def test_rollback_on_exception(database: Database) -> None:
     courier = _make_courier()
 
     try:
-        async with UnitOfWorkImpl(database) as uow:
+        async with UnitOfWorkPostgres(database) as uow:
             await uow.orders.add(order)
             await uow.couriers.add(courier)
             raise RuntimeError("boom")
     except RuntimeError:
         pass
 
-    async with UnitOfWorkImpl(database) as uow:
+    async with UnitOfWorkPostgres(database) as uow:
         saved_order = await uow.orders.get_by_id(order.id)
         saved_courier = await uow.couriers.get_by_id(courier.id)
 
