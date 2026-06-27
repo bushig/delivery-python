@@ -249,3 +249,29 @@ def test_courier_equality_different_type_raises():
 
     with pytest.raises(NotImplementedError):
         courier == object()
+
+
+def test_get_assignment_by_order_id_returns_assignment_when_exists():
+    courier = CourierAggregate(
+        name="Test Courier", location=Location(x=5, y=5), max_volume=Volume(_value=20)
+    )
+    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(_value=10))
+    courier.take_order(order)
+
+    result = courier.get_assignment_by_order_id(order.id)
+
+    assert result is not None
+    assert result.order_id == order.id
+    assert result.volume == order.volume
+
+
+def test_get_assignment_by_order_id_returns_none_when_not_exists():
+    courier = CourierAggregate(
+        name="Test Courier", location=Location(x=5, y=5), max_volume=Volume(_value=20)
+    )
+    order = OrderAggregate(id=uuid.uuid4(), location=Location(x=5, y=5), volume=Volume(_value=10))
+    courier.take_order(order)
+
+    result = courier.get_assignment_by_order_id(uuid.uuid4())
+
+    assert result is None
